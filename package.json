@@ -1,0 +1,25 @@
+{
+  "name": "roulette",
+  "version": "1.0.0",
+  "description": "a simple and easily customizable roulette",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheBlindHawk/Roulette.git"
+  },
+  "keywords": [
+    "roulette",
+    "wheel",
+    "random",
+    "custom"
+  ],
+  "author": "TheBlindHawk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheBlindHawk/Roulette/issues"
+  },
+  "homepage": "https://github.com/TheBlindHawk/Roulette#readme"
+}
