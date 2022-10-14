@@ -4,6 +4,7 @@ NPM package installation
 ```
 npm install theblindhawk/roulette
 ```
+
 ## Usage
 create an html div with ```id=roulette-container```
 ```
@@ -23,7 +24,7 @@ roulette.roll(8);
 
 ## Customization
 
-customize the view:
+**customize the view:**
 
 | Function      | Options               | Default        |
 | ------------- | --------------------- | -------------- |
@@ -33,13 +34,13 @@ customize the view:
 
 NB: shrink will shrink the roulette circle drawing compared to the overall
 
-customize the sound
+**customize the sound**
 
 | Variable      | Comment                            | Default                     |
 | ------------- | ---------------------------------- | --------------------------- |
 | audio_dir     | the directory of the "click" sound | '/sounds/soft_click_1s.wav' |
 
-call actions
+**call actions**
 
 | Function      | Options               | Default        |
 | ------------- | --------------------- | -------------- |
