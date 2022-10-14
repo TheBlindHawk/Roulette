@@ -24,29 +24,29 @@ roulette.roll(8);
 
 ## Customization
 
-**customize the view:**
+### customize the view:
 
-| Function      | Options               | Default        |
-| ------------- | --------------------- | -------------- |
-| setSize()     | width, height, shrink | 310, 310, 20   |
-| setBorder()   | color, width          | #808C94, 10    |
-| addRollText() | before, after         | '', ''         |
+| Function      | Options                | Default        |
+| ------------- | ---------------------- | -------------- |
+| setSize()     | width, height, *shrink | 310, 310, 20   |
+| setBorder()   | color, width           | #808C94, 10    |
+| addRollText() | *before, *after        | '', ''         |
 
 NB: shrink will shrink the roulette circle drawing compared to the overall
 
-**customize the sound**
+### customize the sound
 
 | Variable      | Comment                            | Default                     |
 | ------------- | ---------------------------------- | --------------------------- |
 | audio_dir     | the directory of the "click" sound | '/sounds/soft_click_1s.wav' |
 
-**call actions**
+### call actions
 
-| Function      | Options               | Default        |
-| ------------- | --------------------- | -------------- |
-| roll()        | width, height, shrink | 310, 310, 20   |
-| rollByIndex() | color, width          | #808C94, 10    |
-| draw()        |                       |                |
+| Function      | Comment                                           |
+| ------------- | ------------------------------------------------- |
+| roll()        | rolls the roulette to an index with said value    |
+| rollByIndex() | rolls the roulette to said index                  |
+| draw()        | redraws the roulette (probably unnecessary)       |
 
 ## Getters
 
