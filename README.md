@@ -7,7 +7,7 @@ npm install theblindhawk/roulette
 ## Usage
 create an html div with ```id=roulette-container```
 ```
-<dic class="my_class_name" id="roulette-container">
+<div class="my_class_name" id="roulette-container"></div>
 ```
 
 import and set up the roulette using js
