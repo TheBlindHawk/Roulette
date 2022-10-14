@@ -24,6 +24,8 @@ roulette.roll(8);
 
 ## Customization
 
+</br>
+
 ### customize the view:
 
 | Function      | Options                | Default        |
@@ -34,11 +36,15 @@ roulette.roll(8);
 
 NB: shrink will shrink the roulette circle drawing compared to the overall
 
+</br>
+
 ### customize the sound
 
 | Variable      | Comment                            | Default                     |
 | ------------- | ---------------------------------- | --------------------------- |
 | audio_dir     | the directory of the "click" sound | '/sounds/soft_click_1s.wav' |
+
+</br>
 
 ### call actions
 
@@ -48,8 +54,11 @@ NB: shrink will shrink the roulette circle drawing compared to the overall
 | rollByIndex() | rolls the roulette to said index                  |
 | draw()        | redraws the roulette (probably unnecessary)       |
 
-## Getters
+</br>
 
-| Variable      | Comment                            | Default                     |
-| ------------- | ---------------------------------- | --------------------------- |
-| last_roll     | the last value you rolled on       |                             |
+## public variables
+
+| Variable      | Comment                            |
+| ------------- | ---------------------------------- |
+| last_roll     | the last value you rolled on       |
+| audio_dir     | the directory of the "click" sound |
