@@ -47,7 +47,7 @@ The values of each section of the roulette.
 
 **colors**  
 type: array  
-default: []
+default: []  
 The colors of each section of the roulette.  
 You can input less colors than the values, to have the same colors alternating.  
 
