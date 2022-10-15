@@ -32,29 +32,34 @@ roulette.roll(8);
 ## Roulette()
 
 ```
-new Roulette(roulette_id, rolls, colors = [], width = 310, height = 310, shrink = 20)
+new Roulette(roulette_id, rolls, colors, width, height, shrink)
 ```
 
-**roulette_id**
-type: string
-The id of the div element that will contain the roulette.
+**roulette_id**  
+type: string  
+default: required  
+The id of the div element that will contain the roulette.  
 
-**rolls**
-type: array
-The values of each section of the roulette.
+**rolls**  
+type: array  
+default: required  
+The values of each section of the roulette.  
 
-**colors**
-type: array
-The colors of each section of the roulette.
-You can input less colors than the values, to have the same colors alternating.
+**colors**  
+type: array  
+default: []
+The colors of each section of the roulette.  
+You can input less colors than the values, to have the same colors alternating.  
 
-**width, height**
-type: numeric
-the width and height of the roulette element
+**width, height**  
+type: numeric  
+default: 310  
+the width and height of the roulette element  
 
-**shrink**
-type: numeric
-Will shrink the size of the roulette board in comarison to the overall
+**shrink**  
+type: numeric  
+default: 20  
+Will shrink the size of the roulette board in comparison to the overall  
 
 ## Customization
 
