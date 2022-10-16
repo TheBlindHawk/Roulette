@@ -5,11 +5,12 @@ NPM package installation
 npm install theblindhawk/roulette
 ```
 
-## 1.1 Version Updates
+## 1.2 Version Updates
 
-1. changes/fix to export method
-2. Roulette() now requires the id of the div
-3. customizable colors!
+1. you can now customize roll probabilities!
+2. you can roll on a random number instead of a fixed one
+3. addRollText() => setRollText() for better comprehention
+4. you can now change the arrow svg with a custom element (beta ver.)
 
 ## Usage
 create an html div with ```id=roulette```
@@ -35,31 +36,15 @@ roulette.roll(8);
 new Roulette(roulette_id, rolls, colors, width, height, shrink)
 ```
 
-**roulette_id**  
-type: string  
-default: required  
-The id of the div element that will contain the roulette.  
+| Value         | Type     | Default   | comment        |
+| ------------- | -------- | --------- | -------------- |
+| roulette_id   | string   | required  | The id of the div element that will contain the roulette.  |
+| rolls         | array    | required  | The values of each section of the roulette.                |
+| colors        | array    | []        | The colors of the sections of the roulette.                |
+| width, height | numeric  | 310       | the width and height of the roulette element               |
+| shrink        | numeric  | 20        | Shrinks the size of the board in comparison to the overall |
 
-**rolls**  
-type: array  
-default: required  
-The values of each section of the roulette.  
-
-**colors**  
-type: array  
-default: []  
-The colors of each section of the roulette.  
-You can input less colors than the values, to have the same colors alternating.  
-
-**width, height**  
-type: numeric  
-default: 310  
-the width and height of the roulette element  
-
-**shrink**  
-type: numeric  
-default: 20  
-Will shrink the size of the roulette board in comparison to the overall  
+NB: if the number of colors is less than the rolls they will repeat.
 
 ## Customization
 
@@ -71,7 +56,7 @@ Will shrink the size of the roulette board in comparison to the overall
 | ------------- | ---------------------- | -------------- |
 | setSize()     | width, height, *shrink | 310, 310, 20   |
 | setBorder()   | color, width           | #808C94, 10    |
-| addRollText() | *before, *after        | '', ''         |
+| setRollText() | *before, *after        | '', ''         |
 
 </br>
 
@@ -85,17 +70,21 @@ Will shrink the size of the roulette board in comparison to the overall
 
 ### call actions
 
-| Function      | Comment                                           |
-| ------------- | ------------------------------------------------- |
-| roll()        | rolls the roulette to an index with said value    |
-| rollByIndex() | rolls the roulette to said index                  |
-| draw()        | redraws the roulette (probably unnecessary)       |
+| Function                 | Comment                                                 |
+| ------------------------ | ------------------------------------------------------- |
+| roll(value)              | rolls the roulette to an index with said value          |
+| rollByIndex(index)       | rolls the roulette to said index                        |
+| rollRandom()             | rolls the roulette to a random index                    |
+| rollProbabilities(probs) | rolls the roulette using custom probabilities[]         |
+| draw()                   | redraws the roulette (probably unnecessary)             |
 
 </br>
 
 ## public variables
 
-| Variable      | Comment                            |
-| ------------- | ---------------------------------- |
-| last_roll     | the last value you rolled on       |
-| audio_dir     | the directory of the "click" sound |
+| Variable      | Type     | Comment                            |
+| ------------- | -------- |----------------------------------- |
+| last_roll     | numeric  | the last value you rolled on       |
+| audio_dir     | string   | the directory of the "click" sound |
+| onstart       | function | runs before rolling the roulette   |
+| onstop        | function | runs after rolling the roulette    |
