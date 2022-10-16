@@ -2,20 +2,22 @@ import * as d3 from 'd3';
 
 export class Roulette {
     #width = 310; #height = 310; #shrink = 20;
-    #rolls = []; #colors = [];
+    #rolls = []; #colors = []; #probs = [];
     #rolling = false; #rotation = 0;
     #addtxt = { before: '', after: '' };
     #border = { color: '#808C94', width: 10 };
     #roulette_id = 'roulette';
+    #custom_arrow = null;
     last_roll = null;
     min_spins = 5;
     audio_dir = '/sounds/soft_click_1s.wav';
+    onstart = function() {};
     onstop = function() {};
 
     constructor(roulette_id, rolls, colors = [], width = 310, height = 310, shrink = 20) {
         this.roulette_id = roulette_id;
         this.#width = width;
-        this.#height = height;  
+        this.#height = height;
         this.#shrink = shrink;
         this.#rolls = rolls;
         this.#colors = colors;
@@ -35,6 +37,15 @@ export class Roulette {
         this.draw();
     }
 
+    setArrow(element) {
+        this.#custom_arrow = element;
+    }
+
+    setProbabilities(probabilities) {
+        if(this.#rolls.length == probabilities.length)
+            this.#probs = probabilities;
+    }
+
     addRollText(before = '', after = '') {
         this.#addtxt.before = before;
         this.#addtxt.after = after;
@@ -44,6 +55,7 @@ export class Roulette {
     rollByIndex(index) {
         if(this.#rolling) { return; }
 
+        this.onstart();
         var self = this;
         this.#rolling = true;
         this.last_roll = this.#rolls[index];
@@ -71,6 +83,27 @@ export class Roulette {
                 self.onstop();
             }
         }, 20);
+    }
+    
+    rollProbabilities(probs = this.#probs) {
+        if(probs.length <= 0 || this.#rolls.length != probs.length) { return }
+
+        var counter = 0;
+        const total = probs.reduce((a, b) => a + b, 0);
+        const random =  Math.floor(Math.random() * total) + 1;
+
+        for (var i = 0; i < probs.length; i++) {
+            counter += probs[i];
+            if(counter > random) {
+                this.rollByIndex(i);
+            }
+        }
+        console.error("error: index not found");
+    }
+    
+    rollRandom() {
+        var random = Math.floor(Math.random() * this.#rolls.length);
+        this.rollByIndex(random);
     }
     
     roll(result) {
@@ -132,12 +165,16 @@ export class Roulette {
         }
 
         // draw the arrow
-        const p1 = (radius)+',0 ';
-        const p2 = (radius+padding*2)+',0 ';
-        const p3 = radius+padding+','+this.#shrink*2+' ';
         const arrow_svg = d3.select('#roulette-arrow');
-        arrow_svg.append('polygon')
-            .attr('points', p1 + p2 + p3)
-            .attr('style', 'fill:black; stroke:grey; stroke-width:1');
+        if(this.#custom_arrow === null) {
+            const p1 = (radius)+',0 ';
+            const p2 = (radius+padding*2)+',0 ';
+            const p3 = radius+padding+','+this.#shrink*2+' ';
+            arrow_svg.append('polygon')
+                .attr('points', p1 + p2 + p3)
+                .attr('style', 'fill:black; stroke:grey; stroke-width:1');
+        } else {
+            container.append(this.#custom_arrow); 
+        }
     }
 }
