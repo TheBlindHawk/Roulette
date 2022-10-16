@@ -46,7 +46,7 @@ export class Roulette {
             this.#probs = probabilities;
     }
 
-    addRollText(before = '', after = '') {
+    setRollText(before = '', after = '') {
         this.#addtxt.before = before;
         this.#addtxt.after = after;
         this.draw();
@@ -71,7 +71,7 @@ export class Roulette {
             var increase = Math.floor((sprint - rotation)/sprint * 10) + slow + 1;
             rotation += increase; audio_counter += increase;
             document.getElementById('roulette-circle').style.transform = 'rotate(-'+(rotation%360)+'deg)';
-            if(audio_counter >= audio_distance) {
+            if(audio_counter >= audio_distance && self.audio_dir != '') {
                 var audio = new Audio(self.audio_dir);
                 audio_counter -= audio_distance;
                 audio.play();
