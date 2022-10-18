@@ -1,6 +1,6 @@
 {
   "name": "@theblindhawk/roulette",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "a simple and easily customizable roulette",
   "main": "index.js",
   "dependencies": {

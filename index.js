@@ -10,7 +10,7 @@ export class Roulette {
     #custom_arrow = null;
     last_roll = null;
     min_spins = 5;
-    audio_dir = '/sounds/soft_click_1s.wav';
+    audio_dir = '';
     onstart = function() {};
     onstop = function() {};
 

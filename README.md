@@ -20,7 +20,7 @@ create an html div with ```id=roulette```
 
 import and set up the roulette using js
 ```
-import { Roulette } from "/js/hawk_roulette.js";
+import { Roulette } from "@theblindhawk/roulette";
 
 // the array with all the roulette options
 const rolls = [0, 8, 3, 5, 50];
@@ -65,6 +65,16 @@ NB: if the number of colors is less than the rolls they will repeat.
 | Variable      | Comment                            | Default                     |
 | ------------- | ---------------------------------- | --------------------------- |
 | audio_dir     | the directory of the "click" sound | '/sounds/soft_click_1s.wav' |
+
+to activate the default sound run:
+```
+cp node_modules/packagename/sounds/soft_click_1s.wav public/sounds
+```
+and set the audio_dir like so:
+```
+roulette.audio_dir = '/sounds/soft_click_1s.wav'
+```
+NB: this example is using Laravel, other frameworks may change slightly.
 
 </br>
 
