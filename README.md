@@ -1,3 +1,8 @@
+![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
+![](https://img.shields.io/npm/v/@theblindhawk/roulette)
+![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
+![](https://img.shields.io/librariesio/release/npm/d3)
+
 ## A simple roulette library
 
 NPM package installation
@@ -5,12 +10,11 @@ NPM package installation
 npm install theblindhawk/roulette
 ```
 
-## 1.2 Version Updates
+## 1.3 Version Updates
 
-1. you can now customize roll probabilities!
-2. you can roll on a random number instead of a fixed one
-3. addRollText() => setRollText() for better comprehention
-4. you can now change the arrow svg with a custom element (beta ver.)
+1. you can now rotate the text at will!
+2. the default "click" sound not playing has been fixed
+3. custom arrow svg element has been tested
 
 ## Usage
 create an html div with ```id=roulette```
@@ -64,17 +68,9 @@ NB: if the number of colors is less than the rolls they will repeat.
 
 | Variable      | Comment                            | Default                     |
 | ------------- | ---------------------------------- | --------------------------- |
-| audio_dir     | the directory of the "click" sound | '/sounds/soft_click_1s.wav' |
+| audio_dir     | the directory of the "click" sound | 'default'                   |
 
-to activate the default sound run:
-```
-cp node_modules/packagename/sounds/soft_click_1s.wav public/sounds
-```
-and set the audio_dir like so:
-```
-roulette.audio_dir = '/sounds/soft_click_1s.wav'
-```
-NB: this example is using Laravel, other frameworks may change slightly.
+NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to remove sound
 
 </br>
 
@@ -98,3 +94,48 @@ NB: this example is using Laravel, other frameworks may change slightly.
 | audio_dir     | string   | the directory of the "click" sound |
 | onstart       | function | runs before rolling the roulette   |
 | onstop        | function | runs after rolling the roulette    |
+
+## Examples
+
+Here is a fully set up roulette example
+```
+import { Roulette } from "@theblindhawk/roulette";
+
+const rolls = [0, 8, 3, 5, 50];
+const colors = ["#27296a", "#db5a52"];
+// svg element width = 500x500, wheel drawing width = 460x460
+var roulette = new Roulette("roulette", rolls, colors, 500, 500, 40);
+roulette.audio_dir = 'sounds/my_click.wav";
+
+roulette.onstop = function() { console.log(roulette.last_roll) }
+roulette.rollRandom();
+```
+
+### Roll Probabilities
+The probabilities[] array will accept an array the same lenght of the rolls[] containing integers.
+```
+const rolls = [0, 8, 3, 5, 50];
+// 10% chance for 0/8/3 and 35% chance for 5/50
+const probabilities = [10, 10, 10, 35, 35]
+var roulette = new Roulette("roulette", rolls);
+
+roulette.setProbabilities(probabilities);
+roulette.rollProbabilities();
+```
+You can also shorten the syntax by directly handing the probabilities to the roll statement
+```
+// use previously passed probabilities
+roulette.setProbabilities(probabilities);
+roulette.rollProbabilities();
+
+// directly hand probabilities when rolling
+roulette.rollProbabilities(probabilities);
+```
+Any values, so long as they are an array of integers can be passed as probabilities.
+The following examples will all have 3 choices with 25%/25%/50% probabilities.
+```
+// these will all result in the same probabilities
+roulette.rollProbabilities([ 25, 25, 50 ]);
+roulette.rollProbabilities([ 1, 1, 2 ]);
+roulette.rollProbabilities([ 36, 36, 72 ]);
+```
