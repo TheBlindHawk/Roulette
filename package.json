@@ -1,13 +1,14 @@
 {
   "name": "@theblindhawk/roulette",
-  "version": "1.2.1",
-  "description": "a simple and easily customizable roulette",
+  "version": "1.3.0",
+  "description": "a simple and easily customizable roulette wheel",
   "main": "index.js",
   "dependencies": {
-    "d3": "^7.6.1"
+    "d3": "^7.6.1",
+    "sound-play": "^1.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Log: no test specified\" && exit 0"
   },
   "repository": {
     "type": "git",
@@ -16,8 +17,10 @@
   "keywords": [
     "roulette",
     "wheel",
+    "spin",
     "random",
-    "custom"
+    "probability",
+    "customize"
   ],
   "author": "TheBlindHawk",
   "license": "ISC",

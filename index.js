@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import {sound_click} from './sounds/sounds.js';
 
 export class Roulette {
     #width = 310; #height = 310; #shrink = 20;
@@ -8,9 +9,10 @@ export class Roulette {
     #border = { color: '#808C94', width: 10 };
     #roulette_id = 'roulette';
     #custom_arrow = null;
+    #text_rotation = 0;
     last_roll = null;
     min_spins = 5;
-    audio_dir = '';
+    audio_dir = 'default';
     onstart = function() {};
     onstop = function() {};
 
@@ -39,6 +41,7 @@ export class Roulette {
 
     setArrow(element) {
         this.#custom_arrow = element;
+        this.draw();
     }
 
     setProbabilities(probabilities) {
@@ -49,6 +52,27 @@ export class Roulette {
     setRollText(before = '', after = '') {
         this.#addtxt.before = before;
         this.#addtxt.after = after;
+        this.draw();
+    }
+
+    rotateText(rotation) {
+        switch (rotation) {
+            case "circular-inner":
+                this.#text_rotation = 0;
+                break;
+            case "sideways-left":
+                this.#text_rotation = 90;
+                break;
+            case "circular-outer":
+                this.#text_rotation = 180;
+                break;
+            case "sideways-right":
+                this.#text_rotation = 270;
+                break;
+            default:
+                this.#text_rotation = rotation;
+                break;
+        }
         this.draw();
     }
 
@@ -72,9 +96,15 @@ export class Roulette {
             rotation += increase; audio_counter += increase;
             document.getElementById('roulette-circle').style.transform = 'rotate(-'+(rotation%360)+'deg)';
             if(audio_counter >= audio_distance && self.audio_dir != '') {
-                var audio = new Audio(self.audio_dir);
-                audio_counter -= audio_distance;
-                audio.play();
+                if(self.audio_dir == 'default') {
+                    var audio = new Audio("data:audio/wav;base64," + sound_click);
+                    audio_counter -= audio_distance;
+                    audio.play();
+                } else {
+                    var audio = new Audio(self.audio_dir);
+                    audio_counter -= audio_distance;
+                    audio.play();
+                }
             }
             if(rotation >= sprint) {
                 clearInterval(ival);
@@ -153,7 +183,7 @@ export class Roulette {
                 .style('stroke', this.#border.color)
                 .style('stroke-width', this.#border.width);
 
-            const degree = rotation * ( i + 0.5 );
+            const degree = rotation * ( i + 0.5 ) + this.#text_rotation;
             const tx = radius + (radius-radius/3) * Math.sin(angle * (i+0.5)) + padding;
             const ty = radius + (radius-radius/3) * -Math.cos(angle * (i+0.5)) + padding;
             const translate = 'translate('+ tx +','+ ty +')';
