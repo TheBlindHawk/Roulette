@@ -9,6 +9,8 @@ NPM package installation
 ```
 npm install theblindhawk/roulette
 ```
+![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
+![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
 
 ## 1.3 Version Updates
 
@@ -18,12 +20,12 @@ npm install theblindhawk/roulette
 
 ## Usage
 create an html div with ```id=roulette```
-```
+```html
 <div class="my_class_name" id="roulette"></div>
 ```
 
 import and set up the roulette using js
-```
+```javascript
 import { Roulette } from "@theblindhawk/roulette";
 
 // the array with all the roulette options
@@ -114,7 +116,7 @@ roulette.rollRandom();
 
 ### Roll Probabilities
 The probabilities[] array will accept an array the same lenght of the rolls[] containing integers.
-```
+```javascript
 const rolls = [0, 8, 3, 5, 50];
 // 10% chance for 0/8/3 and 35% chance for 5/50
 const probabilities = [10, 10, 10, 35, 35]
@@ -124,7 +126,7 @@ roulette.setProbabilities(probabilities);
 roulette.rollProbabilities();
 ```
 You can also shorten the syntax by directly handing the probabilities to the roll statement
-```
+```javascript
 // use previously passed probabilities
 roulette.setProbabilities(probabilities);
 roulette.rollProbabilities();
@@ -134,7 +136,7 @@ roulette.rollProbabilities(probabilities);
 ```
 Any values, so long as they are an array of integers can be passed as probabilities.
 The following examples will all have 3 choices with 25%/25%/50% probabilities.
-```
+```javascript
 // these will all result in the same probabilities
 roulette.rollProbabilities([ 25, 25, 50 ]);
 roulette.rollProbabilities([ 1, 1, 2 ]);
@@ -144,12 +146,12 @@ roulette.rollProbabilities([ 36, 36, 72 ]);
 ### Edit Roll Text
 
 For changing the font of the roulette you just need to change the css of the div containing it.
-```
+```html
 <div class="change_font_here" id="roulette"></div>
 ```
 The Roulette will automatically display the values passed in the roll[].
 But if you need to add some text before or after the rolls use the following.
-```
+```javascript
 const probabilities = ['first', 'second']
 var roulette = new Roulette("roulette", rolls);
 
@@ -158,7 +160,7 @@ var roulette = new Roulette("roulette", rolls);
 roulette.setRollText('the ', ' value');
 ```
 If you wish to rotate the text somehow use the following.
-```
+```javascript
 // the text is"straight" on the right side
 roulette.rotateText('sideways-right');
 // the same but using an integer for it
