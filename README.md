@@ -101,7 +101,7 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 ## Examples
 
 Here is a fully set up roulette example
-```
+```javascript
 import { Roulette } from "@theblindhawk/roulette";
 
 const rolls = [0, 8, 3, 5, 50];
