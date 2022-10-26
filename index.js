@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as sound from 'sound-play';
+import {sound_click} from './sounds/sounds.js';
 
 export class Roulette {
     #width = 310; #height = 310; #shrink = 20;
@@ -41,11 +41,18 @@ export class Roulette {
 
     setArrow(element) {
         this.#custom_arrow = element;
+        this.draw();
     }
 
     setProbabilities(probabilities) {
         if(this.#rolls.length == probabilities.length)
             this.#probs = probabilities;
+    }
+
+    setRollText(before = '', after = '') {
+        this.#addtxt.before = before;
+        this.#addtxt.after = after;
+        this.draw();
     }
 
     rotateText(rotation) {
@@ -66,11 +73,6 @@ export class Roulette {
                 this.#text_rotation = rotation;
                 break;
         }
-    }
-
-    setRollText(before = '', after = '') {
-        this.#addtxt.before = before;
-        this.#addtxt.after = after;
         this.draw();
     }
 
@@ -95,7 +97,9 @@ export class Roulette {
             document.getElementById('roulette-circle').style.transform = 'rotate(-'+(rotation%360)+'deg)';
             if(audio_counter >= audio_distance && self.audio_dir != '') {
                 if(self.audio_dir == 'default') {
-                    sound.play('/sounds/sound_click.wav');
+                    var audio = new Audio("data:audio/wav;base64," + sound_click);
+                    audio_counter -= audio_distance;
+                    audio.play();
                 } else {
                     var audio = new Audio(self.audio_dir);
                     audio_counter -= audio_distance;
@@ -179,11 +183,11 @@ export class Roulette {
                 .style('stroke', this.#border.color)
                 .style('stroke-width', this.#border.width);
 
-            const degree = rotation * ( i + 0.5 );
+            const degree = rotation * ( i + 0.5 ) + this.#text_rotation;
             const tx = radius + (radius-radius/3) * Math.sin(angle * (i+0.5)) + padding;
             const ty = radius + (radius-radius/3) * -Math.cos(angle * (i+0.5)) + padding;
             const translate = 'translate('+ tx +','+ ty +')';
-            const rotate = 'rotate(' + degree + this.#text_rotation + ')';
+            const rotate = 'rotate(' + degree + ')';
             svg.append('text')
                 .attr('transform', translate + rotate )
                 .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')

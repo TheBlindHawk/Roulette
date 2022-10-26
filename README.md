@@ -56,11 +56,12 @@ NB: if the number of colors is less than the rolls they will repeat.
 
 ### customize the view:
 
-| Function      | Options                | Default        |
-| ------------- | ---------------------- | -------------- |
-| setSize()     | width, height, *shrink | 310, 310, 20   |
-| setBorder()   | color, width           | #808C94, 10    |
-| setRollText() | *before, *after        | '', ''         |
+| Function      | Options                | Default          |
+| ------------- | ---------------------- | ---------------- |
+| setSize()     | width, height, *shrink | 310, 310, 20     |
+| setBorder()   | color, width           | #808C94, 10      |
+| setRollText() | *before, *after        | '', ''           |
+| rotateText()  | rotation(int/string)   | 'circular-inner' |
 
 </br>
 
@@ -138,4 +139,28 @@ The following examples will all have 3 choices with 25%/25%/50% probabilities.
 roulette.rollProbabilities([ 25, 25, 50 ]);
 roulette.rollProbabilities([ 1, 1, 2 ]);
 roulette.rollProbabilities([ 36, 36, 72 ]);
+```
+
+### Edit Roll Text
+
+For changing the font of the roulette you just need to change the css of the div containing it.
+```
+<div class="change_font_here" id="roulette"></div>
+```
+The Roulette will automatically display the values passed in the roll[].
+But if you need to add some text before or after the rolls use the following.
+```
+const probabilities = ['first', 'second']
+var roulette = new Roulette("roulette", rolls);
+
+// roll 1: 'the first value'
+// roll 2: 'the second value'
+roulette.setRollText('the ', ' value');
+```
+If you wish to rotate the text somehow use the following.
+```
+// the text is"straight" on the right side
+roulette.rotateText('sideways-right');
+// the same but using an integer for it
+roulette.rotateText(270);
 ```
