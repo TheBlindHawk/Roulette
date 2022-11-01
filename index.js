@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import {select} from 'd3-selection';
 import {sound_click} from './sounds/sounds.js';
 
 export class Roulette {
@@ -10,6 +10,7 @@ export class Roulette {
     #roulette_id = 'roulette';
     #custom_arrow = null;
     #text_rotation = 0;
+    #font = { size: '16px', weight: 1, color: 'black'}
     last_roll = null;
     min_spins = 5;
     audio_dir = 'default';
@@ -52,6 +53,11 @@ export class Roulette {
     setRollText(before = '', after = '') {
         this.#addtxt.before = before;
         this.#addtxt.after = after;
+        this.draw();
+    }
+
+    setTextFont(size = '16px', weight = 1, color = 'black') {
+        this.#font = {size: size, weight: weight, color: color}
         this.draw();
     }
 
@@ -169,11 +175,13 @@ export class Roulette {
         container.append(roulette); container.append(down_arrow); 
 
         const sections = this.#rolls.length;
-        const svg = d3.select('#roulette-circle');
+        const svg = select('#roulette-circle');
         const padding = this.#shrink / 2;
         const radius = (Math.min(this.#width, this.#height) - this.#shrink) / 2;
         const angle = Math.PI * 2 / sections;
         const rotation = 360 / sections;
+        svg.style('font-size', this.#font.size);
+        svg.style('font-weight', this.#font.weight);
 
         for (var i = 0; i < sections; i++) {
             var color = this.#colors.length > 0 ? this.#colors[i % this.#colors.length] : '#fff';
@@ -189,13 +197,14 @@ export class Roulette {
             const translate = 'translate('+ tx +','+ ty +')';
             const rotate = 'rotate(' + degree + ')';
             svg.append('text')
+                .style('fill', this.#font.color)
                 .attr('transform', translate + rotate )
                 .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
                 .text(this.#addtxt.before + this.#rolls[i] + this.#addtxt.after);
         }
 
         // draw the arrow
-        const arrow_svg = d3.select('#roulette-arrow');
+        const arrow_svg = select('#roulette-arrow');
         if(this.#custom_arrow === null) {
             const p1 = (radius)+',0 ';
             const p2 = (radius+padding*2)+',0 ';
