@@ -58,12 +58,13 @@ NB: if the number of colors is less than the rolls they will repeat.
 
 ### customize the view:
 
-| Function      | Options                | Default          |
-| ------------- | ---------------------- | ---------------- |
-| setSize()     | width, height, *shrink | 310, 310, 20     |
-| setBorder()   | color, width           | #808C94, 10      |
-| setRollText() | *before, *after        | '', ''           |
-| rotateText()  | rotation(int/string)   | 'circular-inner' |
+| Function      | Options                | Default             |
+| ------------- | ---------------------- | ------------------- |
+| setSize()     | width, height, *shrink | 310, 310, 20        |
+| setBorder()   | color, width           | #808C94, 10         |
+| setRollText() | *before, *after        | '', ''              |
+| rotateText()  | rotation(int/string)   | 'circular-inner'    |
+| setTextFont() | size, weight, color    | '16px', 1, '#black' |
 
 </br>
 
@@ -115,7 +116,7 @@ roulette.rollRandom();
 ```
 
 ### Roll Probabilities
-The probabilities[] array will accept an array the same lenght of the rolls[] containing integers.
+The probabilities[] array will accept an array the same lenght of the rolls[] containing integers.  
 ```javascript
 const rolls = [0, 8, 3, 5, 50];
 // 10% chance for 0/8/3 and 35% chance for 5/50
@@ -125,7 +126,7 @@ var roulette = new Roulette("roulette", rolls);
 roulette.setProbabilities(probabilities);
 roulette.rollProbabilities();
 ```
-You can also shorten the syntax by directly handing the probabilities to the roll statement
+You can also shorten the syntax by directly handing the probabilities to the roll statement  
 ```javascript
 // use previously passed probabilities
 roulette.setProbabilities(probabilities);
@@ -134,8 +135,8 @@ roulette.rollProbabilities();
 // directly hand probabilities when rolling
 roulette.rollProbabilities(probabilities);
 ```
-Any values, so long as they are an array of integers can be passed as probabilities.
-The following examples will all have 3 choices with 25%/25%/50% probabilities.
+Any values, so long as they are an array of integers can be passed as probabilities.  
+The following examples will all have 3 choices with 25%/25%/50% probabilities.  
 ```javascript
 // these will all result in the same probabilities
 roulette.rollProbabilities([ 25, 25, 50 ]);
@@ -145,12 +146,12 @@ roulette.rollProbabilities([ 36, 36, 72 ]);
 
 ### Edit Roll Text
 
-For changing the font of the roulette you just need to change the css of the div containing it.
+For changing the font of the roulette you just need to change the css of the div containing it.  
 ```html
 <div class="change_font_here" id="roulette"></div>
 ```
-The Roulette will automatically display the values passed in the roll[].
-But if you need to add some text before or after the rolls use the following.
+The Roulette will automatically display the values passed in the roll[].  
+But if you need to add some text before or after the rolls use the following.  
 ```javascript
 const probabilities = ['first', 'second']
 var roulette = new Roulette("roulette", rolls);
@@ -159,7 +160,7 @@ var roulette = new Roulette("roulette", rolls);
 // roll 2: 'the second value'
 roulette.setRollText('the ', ' value');
 ```
-If you wish to rotate the text somehow use the following.
+If you wish to rotate the text somehow use the following.  
 ```javascript
 // the text is"straight" on the right side
 roulette.rotateText('sideways-right');
