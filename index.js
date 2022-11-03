@@ -1,5 +1,5 @@
 import {select} from 'd3-selection';
-// import {sound_click} from './sounds/sounds.js';
+import {sound_click} from './sounds/sounds.js';
 
 export class Roulette {
     #width = 310; #height = 310; #shrink = 20;
