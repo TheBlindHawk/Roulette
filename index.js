@@ -1,5 +1,5 @@
 import {select} from 'd3-selection';
-import {sound_click} from './sounds/sounds.js';
+// import {sound_click} from './sounds/sounds.js';
 
 export class Roulette {
     #width = 310; #height = 310; #shrink = 20;
@@ -164,18 +164,14 @@ export class Roulette {
     };
 
     draw() {
-        const container = document.getElementById(this.#roulette_id);
-        container.replaceChildren();
-        const roulette = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-        const down_arrow = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-        roulette.setAttribute('width', this.#width); roulette.setAttribute('height', this.#height);
-        down_arrow.setAttribute('width', this.#width); down_arrow.setAttribute('height', this.#height);
-        down_arrow.style = "position: absolute; left: 50%; transform: translate(-50%,0); z-index: 1;"
-        roulette.id = 'roulette-circle'; down_arrow.id = 'roulette-arrow';
-        container.append(roulette); container.append(down_arrow); 
+        const container = select('#' + this.#roulette_id)
+                .style('position','relative').style('display', 'flex');
+        const svg = container.append('svg').attr('id', 'roulette-circle')
+                .attr('width', this.#width).attr('height', this.#height);
+        const arr = container.append('svg').attr('id', 'roulette-arrow')
+                .style('position', 'absolute').style('z-index', 1);
 
         const sections = this.#rolls.length;
-        const svg = select('#roulette-circle');
         const padding = this.#shrink / 2;
         const radius = (Math.min(this.#width, this.#height) - this.#shrink) / 2;
         const angle = Math.PI * 2 / sections;
@@ -204,12 +200,11 @@ export class Roulette {
         }
 
         // draw the arrow
-        const arrow_svg = select('#roulette-arrow');
         if(this.#custom_arrow === null) {
             const p1 = (radius)+',0 ';
             const p2 = (radius+padding*2)+',0 ';
             const p3 = radius+padding+','+this.#shrink*2+' ';
-            arrow_svg.append('polygon')
+            arr.append('polygon')
                 .attr('points', p1 + p2 + p3)
                 .attr('style', 'fill:black; stroke:grey; stroke-width:1');
         } else {
