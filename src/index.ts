@@ -1,7 +1,15 @@
 import { select, Selection } from 'd3-selection';
 import { sound_click } from './sounds/sounds.js';
 
-type Construct = { roulette_id: string, rolls: number[] | string[], colors: string[], diameter: number, shrink: number };
+type Construct = 
+{ 
+    roulette_id: string, 
+    rolls: number[] | string[], 
+    colors?: string[] | undefined, 
+    diameter?: number | undefined, 
+    shrink?: number | undefined
+};
+
 type Font = { size: string, weight: number, color: string };
 type Rotation = number | "circular-inner" | "sideways-left" | "circular-outer" | "sideways-right";
 
@@ -20,12 +28,12 @@ export class Roulette {
     onstart = function() {};
     onstop = function() {};
 
-    constructor({roulette_id, rolls, colors = [], diameter = 310, shrink = 20}: Construct) {
+    constructor({roulette_id, rolls, colors, diameter, shrink}: Construct) {
         this.#roulette_id = roulette_id;
         this.#rolls = rolls;
-        this.#colors = colors;
-        this.#diameter = diameter;
-        this.#shrink = shrink;
+        this.#colors = colors ? colors : [];
+        this.#diameter = diameter ? diameter : 310;
+        this.#shrink = shrink ? shrink : 20;
         this.draw();
     }
 

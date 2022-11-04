@@ -8,18 +8,23 @@
     "d3-selection": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.19.4",
     "@types/d3-selection": "^3.0.3",
+    "@types/jest": "^29.2.1",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
+    "babel-jest": "^29.2.2",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
+    "jest": "^29.2.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
+    "ts-jest": "^29.0.3",
     "typescript": "^4.8.4"
   },
   "scripts": {
-    "test": "echo \"Log: no test specified\" && exit 0",
+    "test": "jest",
     "lint": "run-p lint:*",
     "lint:tsc": "tsc --noEmit",
     "lint:prettier": "prettier -c src/sounds",
@@ -43,6 +48,21 @@
   ],
   "author": "TheBlindHawk",
   "license": "ISC",
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "transform": {
+      "^.+\\.(ts|tsx)?$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "d3": "<rootDir>/node_modules/d3-selection/dist/d3-selection.min.js"
+    }
+  },
   "bugs": {
     "url": "https://github.com/TheBlindHawk/Roulette/issues"
   },
