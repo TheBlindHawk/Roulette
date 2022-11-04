@@ -1,13 +1,33 @@
 {
   "name": "@theblindhawk/roulette",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "a simple and easily customizable roulette wheel",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "d3-selection": "^3.0.0"
   },
+  "devDependencies": {
+    "@types/d3-selection": "^3.0.3",
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
+    "eslint-config-prettier": "^8.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4"
+  },
   "scripts": {
-    "test": "echo \"Log: no test specified\" && exit 0"
+    "test": "echo \"Log: no test specified\" && exit 0",
+    "lint": "run-p lint:*",
+    "lint:tsc": "tsc --noEmit",
+    "lint:prettier": "prettier -c src/sounds",
+    "lint:eslint": "eslint src",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier -w src/sounds",
+    "fix:eslint": "npm run lint:eslint --fix",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

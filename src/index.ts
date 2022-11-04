@@ -1,51 +1,52 @@
-import {select} from 'd3-selection';
-import {sound_click} from './sounds/sounds.js';
+import { select, Selection } from 'd3-selection';
+import { sound_click } from './sounds/sounds.js';
+
+type Construct = { roulette_id: string, rolls: number[] | string[], colors: string[], diameter: number, shrink: number };
+type Font = { size: string, weight: number, color: string };
+type Rotation = number | "circular-inner" | "sideways-left" | "circular-outer" | "sideways-right";
 
 export class Roulette {
-    #width = 310; #height = 310; #shrink = 20;
-    #rolls = []; #colors = []; #probs = [];
-    #rolling = false; #rotation = 0;
-    #addtxt = { before: '', after: '' };
-    #border = { color: '#808C94', width: 10 };
-    #roulette_id = 'roulette';
-    #custom_arrow = null;
-    #text_rotation = 0;
-    #font = { size: '16px', weight: 1, color: 'black'}
-    last_roll = null;
-    min_spins = 5;
-    audio_dir = 'default';
+    #roulette_id: string;
+    #diameter: number; #shrink: number;
+    #rolls: number[] | string[]; #colors: string[]; #probs!: number[];
+    #rolling = false; #rotation = 0; #text_rotation = 0;
+    #addtxt: {before: string, after: string} = { before: '', after: '' };
+    #border: {color: string, width: number} = { color: '#808C94', width: 10 };
+    #custom_arrow: Element | null = null;
+    #svg!: Selection<SVGSVGElement, unknown, HTMLElement, any>;
+    #arrow!: Selection<SVGSVGElement, unknown, HTMLElement, any>;
+    #font: Font = { size: '16px', weight: 1, color: 'black'}
+    last_roll!: string | number; min_spins = 5; audio_dir = 'default';
     onstart = function() {};
     onstop = function() {};
 
-    constructor(roulette_id, rolls, colors = [], width = 310, height = 310, shrink = 20) {
-        this.roulette_id = roulette_id;
-        this.#width = width;
-        this.#height = height;
-        this.#shrink = shrink;
+    constructor({roulette_id, rolls, colors = [], diameter = 310, shrink = 20}: Construct) {
+        this.#roulette_id = roulette_id;
         this.#rolls = rolls;
         this.#colors = colors;
-        this.draw();
-    }
-
-    setSize(width, height, shrink = 20) {
-        this.#width = width;
-        this.#height = height;
+        this.#diameter = diameter;
         this.#shrink = shrink;
         this.draw();
     }
 
-    setBorder(stroke_color, stroke_width) {
+    setSize(diameter: number,  shrink: number) {
+        this.#diameter = diameter;
+        this.#shrink = shrink;
+        this.draw();
+    }
+
+    setBorder(stroke_color: string, stroke_width: number) {
         this.#border.color = stroke_color;
         this.#border.width = stroke_width;
         this.draw();
     }
 
-    setArrow(element) {
+    setArrow(element: Element) {
         this.#custom_arrow = element;
         this.draw();
     }
 
-    setProbabilities(probabilities) {
+    setProbabilities(probabilities: number[]) {
         if(this.#rolls.length == probabilities.length)
             this.#probs = probabilities;
     }
@@ -56,12 +57,12 @@ export class Roulette {
         this.draw();
     }
 
-    setTextFont(size = '16px', weight = 1, color = 'black') {
+    setTextFont({size, weight, color}: Font) {
         this.#font = {size: size, weight: weight, color: color}
         this.draw();
     }
 
-    rotateText(rotation) {
+    rotateText(rotation: Rotation) {
         switch (rotation) {
             case "circular-inner":
                 this.#text_rotation = 0;
@@ -82,53 +83,52 @@ export class Roulette {
         this.draw();
     }
 
-    rollByIndex(index) {
+    rollByIndex(index: number) {
         if(this.#rolling) { return; }
 
         this.onstart();
-        var self = this;
         this.#rolling = true;
         this.last_roll = this.#rolls[index];
 
-        var rotation = this.#rotation;
+        let rotation = this.#rotation;
         const sections = this.#rolls.length;
         const point = 360 * (index) / (sections) + 360 / sections / 2;
         const sprint = (Math.floor(Math.random() * 4) + this.min_spins) * 360 + point;
-        var audio_counter = 0; const audio_distance = 360 / sections;
+        let audio_counter = 0; const audio_distance = 360 / sections;
 
-        var ival = setInterval(function() {
-            var slow = Math.min(5, Math.floor((sprint - rotation)/180 * 5));
-            var increase = Math.floor((sprint - rotation)/sprint * 10) + slow + 1;
+        const ival = setInterval(() => {
+            const slow = Math.min(5, Math.floor((sprint - rotation)/180 * 5));
+            const increase = Math.floor((sprint - rotation)/sprint * 10) + slow + 1;
             rotation += increase; audio_counter += increase;
-            document.getElementById('roulette-circle').style.transform = 'rotate(-'+(rotation%360)+'deg)';
-            if(audio_counter >= audio_distance && self.audio_dir != '') {
-                if(self.audio_dir == 'default') {
-                    var audio = new Audio("data:audio/wav;base64," + sound_click);
+            this.#svg?.style('transform', 'rotate(-'+(rotation%360)+'deg)');
+            if(audio_counter >= audio_distance && this.audio_dir != '') {
+                if(this.audio_dir == 'default') {
+                    const audio = new Audio("data:audio/wav;base64," + sound_click);
                     audio_counter -= audio_distance;
                     audio.play();
                 } else {
-                    var audio = new Audio(self.audio_dir);
+                    const audio = new Audio(this.audio_dir);
                     audio_counter -= audio_distance;
                     audio.play();
                 }
             }
             if(rotation >= sprint) {
                 clearInterval(ival);
-                self.#rotation = rotation%360;
-                self.#rolling = false;
-                self.onstop();
+                this.#rotation = rotation%360;
+                this.#rolling = false;
+                this.onstop();
             }
         }, 20);
     }
     
-    rollProbabilities(probs = this.#probs) {
+    rollProbabilities(probs: number[] = this.#probs) {
         if(probs.length <= 0 || this.#rolls.length != probs.length) { return }
 
-        var counter = 0;
+        let counter = 0;
         const total = probs.reduce((a, b) => a + b, 0);
         const random =  Math.floor(Math.random() * total) + 1;
 
-        for (var i = 0; i < probs.length; i++) {
+        for (let i = 0; i < probs.length; i++) {
             counter += probs[i];
             if(counter > random) {
                 this.rollByIndex(i);
@@ -138,20 +138,20 @@ export class Roulette {
     }
     
     rollRandom() {
-        var random = Math.floor(Math.random() * this.#rolls.length);
+        const random = Math.floor(Math.random() * this.#rolls.length);
         this.rollByIndex(random);
     }
     
-    roll(result) {
-        var indexes = [];
-        for (var i = 0; i < this.#rolls.length; i++) {
+    roll(result: string | number) {
+        const indexes: number[] = [];
+        for (let i = 0; i < this.#rolls.length; i++) {
             if(this.#rolls[i] === result) { indexes.push(i); }
         }
-        var random = Math.floor(Math.random() * indexes.length);
+        const random = Math.floor(Math.random() * indexes.length);
         this.rollByIndex(indexes[random]);
     }
 
-    #getSector(r, p, s, i) {
+    #getSector(r: number, p: number, s: number, i: number) {
         const a1 = 360 / s * i - 90;
         const a2 = 360 / s * (i + 1) - 90;
         const degtorad = Math.PI / 180;
@@ -166,22 +166,22 @@ export class Roulette {
     draw() {
         const container = select('#' + this.#roulette_id)
                 .style('position','relative').style('display', 'flex');
-        const svg = container.append('svg').attr('id', 'roulette-circle')
-                .attr('width', this.#width).attr('height', this.#height);
-        const arr = container.append('svg').attr('id', 'roulette-arrow')
+        this.#svg = container.append('svg').attr('id', 'roulette-circle')
+                .attr('width', this.#diameter).attr('height', this.#diameter);
+        this.#arrow = container.append('svg').attr('id', 'roulette-arrow')
                 .style('position', 'absolute').style('z-index', 1);
 
         const sections = this.#rolls.length;
         const padding = this.#shrink / 2;
-        const radius = (Math.min(this.#width, this.#height) - this.#shrink) / 2;
+        const radius = (this.#diameter - this.#shrink) / 2;
         const angle = Math.PI * 2 / sections;
         const rotation = 360 / sections;
-        svg.style('font-size', this.#font.size);
-        svg.style('font-weight', this.#font.weight);
+        this.#svg.style('font-size', this.#font.size);
+        this.#svg.style('font-weight', this.#font.weight);
 
-        for (var i = 0; i < sections; i++) {
-            var color = this.#colors.length > 0 ? this.#colors[i % this.#colors.length] : '#fff';
-            svg.append('path')
+        for (let i = 0; i < sections; i++) {
+            const color = this.#colors.length > 0 ? this.#colors[i % this.#colors.length] : '#fff';
+            this.#svg.append('path')
                 .attr('d', this.#getSector(radius, padding, sections, i))
                 .style('fill', color)
                 .style('stroke', this.#border.color)
@@ -192,7 +192,7 @@ export class Roulette {
             const ty = radius + (radius-radius/3) * -Math.cos(angle * (i+0.5)) + padding;
             const translate = 'translate('+ tx +','+ ty +')';
             const rotate = 'rotate(' + degree + ')';
-            svg.append('text')
+            this.#svg.append('text')
                 .style('fill', this.#font.color)
                 .attr('transform', translate + rotate )
                 .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
@@ -204,11 +204,11 @@ export class Roulette {
             const p1 = (radius)+',0 ';
             const p2 = (radius+padding*2)+',0 ';
             const p3 = radius+padding+','+this.#shrink*2+' ';
-            arr.append('polygon')
+            this.#arrow.append('polygon')
                 .attr('points', p1 + p2 + p3)
                 .attr('style', 'fill:black; stroke:grey; stroke-width:1');
         } else {
-            container.append(this.#custom_arrow); 
+            // container.append(this.#custom_arrow); 
         }
     }
 }

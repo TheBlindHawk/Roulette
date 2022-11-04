@@ -30,7 +30,7 @@ import { Roulette } from "@theblindhawk/roulette";
 
 // the array with all the roulette options
 const rolls = [0, 8, 3, 5, 50];
-var roulette = new Roulette("roulette", rolls);
+let roulette = new Roulette("roulette", rolls);
 // tell the roulette to roll on said option
 roulette.roll(8);
 ```
@@ -39,7 +39,7 @@ roulette.roll(8);
 ## Roulette()
 
 ```
-new Roulette(roulette_id, rolls, colors, width, height, shrink)
+new Roulette(roulette_id, rolls, colors, diameter, shrink);
 ```
 
 | Value         | Type     | Default   | comment        |
@@ -47,7 +47,7 @@ new Roulette(roulette_id, rolls, colors, width, height, shrink)
 | roulette_id   | string   | required  | The id of the div element that will contain the roulette.  |
 | rolls         | array    | required  | The values of each section of the roulette.                |
 | colors        | array    | []        | The colors of the sections of the roulette.                |
-| width, height | numeric  | 310       | the width and height of the roulette element               |
+| diameter      | numeric  | 310       | the width and height of the roulette element               |
 | shrink        | numeric  | 20        | Shrinks the size of the board in comparison to the overall |
 
 NB: if the number of colors is less than the rolls they will repeat.
@@ -108,7 +108,7 @@ import { Roulette } from "@theblindhawk/roulette";
 const rolls = [0, 8, 3, 5, 50];
 const colors = ["#27296a", "#db5a52"];
 // svg element width = 500x500, wheel drawing width = 460x460
-var roulette = new Roulette("roulette", rolls, colors, 500, 500, 40);
+let roulette = new Roulette("roulette", rolls, colors, 500, 40);
 roulette.audio_dir = 'sounds/my_click.wav";
 
 roulette.onstop = function() { console.log(roulette.last_roll) }
@@ -121,7 +121,7 @@ The probabilities[] array will accept an array the same lenght of the rolls[] co
 const rolls = [0, 8, 3, 5, 50];
 // 10% chance for 0/8/3 and 35% chance for 5/50
 const probabilities = [10, 10, 10, 35, 35]
-var roulette = new Roulette("roulette", rolls);
+let roulette = new Roulette("roulette", rolls);
 
 roulette.setProbabilities(probabilities);
 roulette.rollProbabilities();
@@ -154,7 +154,7 @@ The Roulette will automatically display the values passed in the roll[].
 But if you need to add some text before or after the rolls use the following.  
 ```javascript
 const probabilities = ['first', 'second']
-var roulette = new Roulette("roulette", rolls);
+let roulette = new Roulette("roulette", rolls);
 
 // roll 1: 'the first value'
 // roll 2: 'the second value'
