@@ -1,28 +1,28 @@
 import { select, Selection } from 'd3-selection';
-import { sound_click } from './sounds/sounds.js';
+import { sound_click } from './sounds/sounds';
+import arrows from './images/arrows';
 
 type Construct = 
-{ 
+{
     roulette_id: string, 
     rolls: number[] | string[], 
-    colors?: string[] | undefined, 
-    diameter?: number | undefined, 
-    shrink?: number | undefined
+    colors: string[], 
+    diameter: number, 
+    shrink: number
 };
 
 type Font = { size: string, weight: number, color: string };
-type Rotation = number | "circular-inner" | "sideways-left" | "circular-outer" | "sideways-right";
+type Rotation = number | "top" | "left" | "bottom" | "right";
 
 export class Roulette {
     #roulette_id: string;
     #diameter: number; #shrink: number;
     #rolls: number[] | string[]; #colors: string[]; #probs!: number[];
-    #rolling = false; #rotation = 0; #text_rotation = 0;
+    #rolling = false; #rotation = 0; #text_rotation = 0; #arrow_html = "default";
     #addtxt: {before: string, after: string} = { before: '', after: '' };
     #border: {color: string, width: number} = { color: '#808C94', width: 10 };
-    #custom_arrow: Element | null = null;
     #svg!: Selection<SVGSVGElement, unknown, HTMLElement, any>;
-    #arrow!: Selection<SVGSVGElement, unknown, HTMLElement, any>;
+    #arrow!: Selection<Document, unknown, HTMLElement, any>;
     #font: Font = { size: '16px', weight: 1, color: 'black'}
     last_roll!: string | number; min_spins = 5; audio_dir = 'default';
     onstart = function() {};
@@ -49,8 +49,8 @@ export class Roulette {
         this.draw();
     }
 
-    setArrow(element: Element) {
-        this.#custom_arrow = element;
+    setArrow(element: string) {
+        this.#arrow_html = element;
         this.draw();
     }
 
@@ -65,23 +65,23 @@ export class Roulette {
         this.draw();
     }
 
-    setTextFont({size, weight, color}: Font) {
+    setTextFont(size: string, weight: number, color: string) {
         this.#font = {size: size, weight: weight, color: color}
         this.draw();
     }
 
     rotateText(rotation: Rotation) {
         switch (rotation) {
-            case "circular-inner":
+            case "top":
                 this.#text_rotation = 0;
                 break;
-            case "sideways-left":
+            case "left":
                 this.#text_rotation = 90;
                 break;
-            case "circular-outer":
+            case "bottom":
                 this.#text_rotation = 180;
                 break;
-            case "sideways-right":
+            case "right":
                 this.#text_rotation = 270;
                 break;
             default:
@@ -134,7 +134,7 @@ export class Roulette {
 
         let counter = 0;
         const total = probs.reduce((a, b) => a + b, 0);
-        const random =  Math.floor(Math.random() * total) + 1;
+        const random =  Math.floor(Math.random() * total);
 
         for (let i = 0; i < probs.length; i++) {
             counter += probs[i];
@@ -142,7 +142,6 @@ export class Roulette {
                 this.rollByIndex(i);
             }
         }
-        console.error("error: index not found");
     }
     
     rollRandom() {
@@ -172,12 +171,22 @@ export class Roulette {
     };
 
     draw() {
-        const container = select('#' + this.#roulette_id)
-                .style('position','relative').style('display', 'flex');
+        this.#resetDraw();
+        this.#drawRoulette();
+        this.#drawArrow();
+    }
+
+    #resetDraw() {
+        const container = select('#' + this.#roulette_id);
+        container.selectAll("*").remove();
+        container.style('position','relative').style('display', 'flex');
+    }
+
+    #drawRoulette() {
+        const container = select('#' + this.#roulette_id);
+
         this.#svg = container.append('svg').attr('id', 'roulette-circle')
                 .attr('width', this.#diameter).attr('height', this.#diameter);
-        this.#arrow = container.append('svg').attr('id', 'roulette-arrow')
-                .style('position', 'absolute').style('z-index', 1);
 
         const sections = this.#rolls.length;
         const padding = this.#shrink / 2;
@@ -206,17 +215,11 @@ export class Roulette {
                 .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
                 .text(this.#addtxt.before + this.#rolls[i] + this.#addtxt.after);
         }
+    }
 
-        // draw the arrow
-        if(this.#custom_arrow === null) {
-            const p1 = (radius)+',0 ';
-            const p2 = (radius+padding*2)+',0 ';
-            const p3 = radius+padding+','+this.#shrink*2+' ';
-            this.#arrow.append('polygon')
-                .attr('points', p1 + p2 + p3)
-                .attr('style', 'fill:black; stroke:grey; stroke-width:1');
-        } else {
-            // container.append(this.#custom_arrow); 
-        }
+    #drawArrow() {
+        const container = select('#' + this.#roulette_id);
+        this.#arrow = container.append(arrows(this.#arrow_html));
+        this.#arrow.attr('id', 'roulette-arrow').style('position', 'absolute').style('z-index', 1);
     }
 }

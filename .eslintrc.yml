@@ -1,4 +1,5 @@
 env:
+  jest: true
   es2020: true
 parser: "@typescript-eslint/parser"
 extends:
