@@ -18,7 +18,7 @@ export class Roulette {
     onstop = function() {};
 
     constructor(roulette_id, rolls, colors = [], width = 310, height = 310, shrink = 20) {
-        this.roulette_id = roulette_id;
+        this.#roulette_id = roulette_id;
         this.#width = width;
         this.#height = height;
         this.#shrink = shrink;
@@ -122,16 +122,17 @@ export class Roulette {
     }
     
     rollProbabilities(probs = this.#probs) {
-        if(probs.length <= 0 || this.#rolls.length != probs.length) { return }
+        if(probs.length <= 0 || this.#rolls.length != probs.length) { return; }
 
-        var counter = 0;
+        let counter = 0;
         const total = probs.reduce((a, b) => a + b, 0);
-        const random =  Math.floor(Math.random() * total) + 1;
+        const random =  Math.floor(Math.random() * total);
 
-        for (var i = 0; i < probs.length; i++) {
+        for (let i = 0; i < probs.length; i++) {
             counter += probs[i];
             if(counter > random) {
                 this.rollByIndex(i);
+                return true;
             }
         }
         console.error("error: index not found");
