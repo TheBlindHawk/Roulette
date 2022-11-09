@@ -7,7 +7,7 @@
 
 NPM package installation
 ```
-npm install theblindhawk/roulette
+npm install @theblindhawk/roulette
 ```
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
