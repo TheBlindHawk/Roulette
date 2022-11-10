@@ -99,6 +99,14 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 | onstart       | function | runs before rolling the roulette   |
 | onstop        | function | runs after rolling the roulette    |
 
+</br>
+
+## currently in beta
+
+| Function                 | Comment                                                 |
+| ------------------------ | ------------------------------------------------------- |
+| setArrow(Element)        | custom element to replace the arrow (coming in v/2.0.0) |
+
 ## Examples
 
 Here is a fully set up roulette example

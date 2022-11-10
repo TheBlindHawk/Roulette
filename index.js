@@ -7,8 +7,8 @@ export class Roulette {
     #rolling = false; #rotation = 0;
     #addtxt = { before: '', after: '' };
     #border = { color: '#808C94', width: 10 };
+    #custom_arrow = null; #svg = null;
     #roulette_id = 'roulette';
-    #custom_arrow = null;
     #text_rotation = 0;
     #font = { size: '16px', weight: 1, color: 'black'}
     last_roll = null;
@@ -100,7 +100,7 @@ export class Roulette {
             var slow = Math.min(5, Math.floor((sprint - rotation)/180 * 5));
             var increase = Math.floor((sprint - rotation)/sprint * 10) + slow + 1;
             rotation += increase; audio_counter += increase;
-            document.getElementById('roulette-circle').style.transform = 'rotate(-'+(rotation%360)+'deg)';
+            self.#svg.style('transform', 'rotate(-'+(rotation%360)+'deg)');
             if(audio_counter >= audio_distance && self.audio_dir != '') {
                 if(self.audio_dir == 'default') {
                     var audio = new Audio("data:audio/wav;base64," + sound_click);
@@ -165,28 +165,23 @@ export class Roulette {
     };
 
     draw() {
-        const container = document.getElementById(this.#roulette_id);
-        container.replaceChildren();
-        const roulette = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-        const down_arrow = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-        roulette.setAttribute('width', this.#width); roulette.setAttribute('height', this.#height);
-        down_arrow.setAttribute('width', this.#width); down_arrow.setAttribute('height', this.#height);
-        down_arrow.style = "position: absolute; left: 50%; transform: translate(-50%,0); z-index: 1;"
-        roulette.id = 'roulette-circle'; down_arrow.id = 'roulette-arrow';
-        container.append(roulette); container.append(down_arrow); 
+        const container = select('#' + this.#roulette_id);
+        container.style('position', 'relative').selectAll("*").remove();
+
+        this.#svg = container.append('svg').attr('id', 'roulette-circle')
+                .attr('width', this.#width).attr('height', this.#height);
 
         const sections = this.#rolls.length;
-        const svg = select('#roulette-circle');
         const padding = this.#shrink / 2;
         const radius = (Math.min(this.#width, this.#height) - this.#shrink) / 2;
         const angle = Math.PI * 2 / sections;
         const rotation = 360 / sections;
-        svg.style('font-size', this.#font.size);
-        svg.style('font-weight', this.#font.weight);
+        this.#svg.style('font-size', this.#font.size);
+        this.#svg.style('font-weight', this.#font.weight);
 
         for (var i = 0; i < sections; i++) {
             var color = this.#colors.length > 0 ? this.#colors[i % this.#colors.length] : '#fff';
-            svg.append('path')
+            this.#svg.append('path')
                 .attr('d', this.#getSector(radius, padding, sections, i))
                 .style('fill', color)
                 .style('stroke', this.#border.color)
@@ -197,7 +192,7 @@ export class Roulette {
             const ty = radius + (radius-radius/3) * -Math.cos(angle * (i+0.5)) + padding;
             const translate = 'translate('+ tx +','+ ty +')';
             const rotate = 'rotate(' + degree + ')';
-            svg.append('text')
+            this.#svg.append('text')
                 .style('fill', this.#font.color)
                 .attr('transform', translate + rotate )
                 .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
@@ -205,16 +200,15 @@ export class Roulette {
         }
 
         // draw the arrow
-        const arrow_svg = select('#roulette-arrow');
         if(this.#custom_arrow === null) {
             const p1 = (radius)+',0 ';
             const p2 = (radius+padding*2)+',0 ';
             const p3 = radius+padding+','+this.#shrink*2+' ';
-            arrow_svg.append('polygon')
-                .attr('points', p1 + p2 + p3)
+            container.append('svg').style('position', 'absolute').style('left', '0')
+                .append('polygon').attr('points', p1 + p2 + p3)
                 .attr('style', 'fill:black; stroke:grey; stroke-width:1');
         } else {
-            container.append(this.#custom_arrow); 
+            document.getElementById(this.#roulette_id).append(this.#custom_arrow); 
         }
     }
 }
