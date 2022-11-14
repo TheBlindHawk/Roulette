@@ -12,11 +12,15 @@ npm install @theblindhawk/roulette
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
 
-## 1.3 Version Updates
+## Version 2.0.0 is on its way!
 
-1. you can now rotate the text at will!
-2. the default "click" sound not playing has been fixed
-3. custom arrow svg element has been tested
+1. (coming soon) can shape the roulette as a doughnut
+2. (coming soon) better arrow graphics and customization
+3. (coming soon) possibility to move the arrow on a different position
+
+and [more](https://github.com/TheBlindHawk/Roulette/pull/6).
+
+Also see information regarding other [version updates](https://github.com/TheBlindHawk/Roulette/releases)
 
 ## Usage
 create an html div with ```id=roulette```
@@ -117,7 +121,7 @@ const rolls = [0, 8, 3, 5, 50];
 const colors = ["#27296a", "#db5a52"];
 // svg element width = 500x500, wheel drawing width = 460x460
 var roulette = new Roulette("roulette", rolls, colors, 500, 500, 40);
-roulette.audio_dir = 'sounds/my_click.wav";
+roulette.audio_dir = 'sounds/my_click.wav';
 
 roulette.onstop = function() { console.log(roulette.last_roll) }
 roulette.rollRandom();
