@@ -4,7 +4,7 @@ import arrows from './images/arrows';
 
 type Construct = 
 {
-    roulette_id: string, 
+    id: string, 
     rolls: number[] | string[], 
     colors: string[], 
     diameter: number, 
@@ -22,18 +22,18 @@ export class Roulette {
     #addtxt: {before: string, after: string} = { before: '', after: '' };
     #border: {color: string, width: number} = { color: '#808C94', width: 10 };
     #svg!: Selection<SVGSVGElement, unknown, HTMLElement, any>;
-    #arrow!: Selection<Document, unknown, HTMLElement, any>;
+    #arrow!: Selection<HTMLElement, unknown, HTMLElement, any>;
     #font: Font = { size: '16px', weight: 1, color: 'black'}
     last_roll!: string | number; min_spins = 5; audio_dir = 'default';
     onstart = function() {};
     onstop = function() {};
 
-    constructor({roulette_id, rolls, colors, diameter, shrink}: Construct) {
-        this.#roulette_id = roulette_id;
+    constructor({id, rolls, colors, diameter, shrink}: Construct) {
+        this.#roulette_id = id;
         this.#rolls = rolls;
         this.#colors = colors ? colors : [];
-        this.#diameter = diameter ? diameter : 310;
-        this.#shrink = shrink ? shrink : 20;
+        this.#diameter = diameter ? diameter : 360;
+        this.#shrink = shrink ? shrink : 60;
         this.draw();
     }
 
@@ -179,7 +179,8 @@ export class Roulette {
     #resetDraw() {
         const container = select('#' + this.#roulette_id);
         container.selectAll("*").remove();
-        container.style('position','relative').style('display', 'flex');
+        container.style('position','relative').style('display', 'flex')
+            .style('justify-content', 'center');
     }
 
     #drawRoulette() {
@@ -220,6 +221,7 @@ export class Roulette {
     #drawArrow() {
         const container = select('#' + this.#roulette_id);
         this.#arrow = container.append(arrows(this.#arrow_html));
-        this.#arrow.attr('id', 'roulette-arrow').style('position', 'absolute').style('z-index', 1);
+        this.#arrow.attr('id', 'roulette-arrow').style('position', 'absolute')
+            .style('z-index', 1).style('max-width', '60px');
     }
 }
