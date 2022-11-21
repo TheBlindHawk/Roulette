@@ -4,36 +4,57 @@ import arrows from './images/arrows';
 
 type Construct = 
 {
-    id: string, 
-    rolls: number[] | string[], 
-    colors: string[], 
-    diameter: number, 
+    id: string,
+    type: Type,
+    rolls: number[] | string[],
+    colors: string[],
+    duration: number,
+    doughnut: DoughnutDetails,
+    image: ImageDetails,
+    arrow: Arrow,
+    landing: Landing,
+    diameter: number,
     shrink: number
 };
 
 type Font = { size: string, weight: number, color: string };
 type Rotation = number | "top" | "left" | "bottom" | "right";
+type ImageDetails = { src: string, angle: number };
+type DoughnutDetails = { diameter: string, fill: string};
+type Arrow = { element: string | HTMLElement, width: number };
+type Type = 'standard' | 'image' | 'doughnut' | 'casino';
+type Landing = 'precise' | 'loose' | 'edgy';
+type HTMLImageSelection = Selection<HTMLImageElement, unknown, HTMLElement, any>;
+type HTMLSelection = Selection<HTMLElement, unknown, HTMLElement, any>;
+type SVGSelection = Selection<SVGSVGElement, unknown, HTMLElement, any>;
 
 export class Roulette {
-    #roulette_id: string;
-    #diameter: number; #shrink: number;
+    #roulette_id: string; #type: Type; #landing: Landing;
+    #image: ImageDetails | undefined;
+    #doughnut: DoughnutDetails | undefined;
+    #diameter: number; #shrink: number; #duration: number;
     #rolls: number[] | string[]; #colors: string[]; #probs!: number[];
-    #rolling = false; #rotation = 0; #text_rotation = 0; #arrow_html = "default";
+    #rolling = false; #rotation = 0; #text_rotation = 0; #arrow: Arrow;
     #addtxt: {before: string, after: string} = { before: '', after: '' };
     #border: {color: string, width: number} = { color: '#808C94', width: 10 };
-    #svg!: Selection<SVGSVGElement, unknown, HTMLElement, any>;
-    #arrow!: Selection<HTMLElement, unknown, HTMLElement, any>;
+    #svg!: SVGSelection | HTMLImageSelection; #d3_arrow!: HTMLSelection;
     #font: Font = { size: '16px', weight: 1, color: 'black'}
-    last_roll!: string | number; min_spins = 5; audio_dir = 'default';
+    last_roll!: string | number; audio_dir = 'default';
     onstart = function() {};
     onstop = function() {};
 
-    constructor({id, rolls, colors, diameter, shrink}: Construct) {
-        this.#roulette_id = id;
-        this.#rolls = rolls;
-        this.#colors = colors ? colors : [];
-        this.#diameter = diameter ? diameter : 360;
-        this.#shrink = shrink ? shrink : 60;
+    constructor(construct: Construct) {
+        this.#roulette_id = construct.id;
+        this.#rolls = construct.rolls;
+        this.#type = construct.type ? construct.type : 'standard';
+        this.#landing = construct.landing ? construct.landing : 'loose';
+        this.#image = this.#type === 'image' ? construct.image : undefined;
+        this.#doughnut = this.#type === 'image' ? construct.doughnut : undefined;
+        this.#colors = construct.colors ? construct.colors : [];
+        this.#duration = construct.duration ? construct.duration : 10000;
+        this.#diameter = construct.diameter ? construct.diameter : 360;
+        this.#shrink = construct.shrink ? construct.shrink : 60;
+        this.#arrow = construct.arrow ? construct.arrow : { element: 'default', width : 60 };
         this.draw();
     }
 
@@ -49,14 +70,18 @@ export class Roulette {
         this.draw();
     }
 
-    setArrow(element: string) {
-        this.#arrow_html = element;
+    setArrow(arrow: Arrow) {
+        this.#arrow = arrow;
         this.draw();
     }
 
     setProbabilities(probabilities: number[]) {
         if(this.#rolls.length == probabilities.length)
             this.#probs = probabilities;
+    }
+
+    setDuration(milli: number) {
+        this.#duration = milli;
     }
 
     setRollText(before = '', after = '') {
@@ -101,16 +126,20 @@ export class Roulette {
         let rotation = this.#rotation;
         const sections = this.#rolls.length;
         const point = 360 * (index) / (sections) + 360 / sections / 2;
-        const sprint = (Math.floor(Math.random() * 4) + this.min_spins) * 360 + point;
-        let audio_counter = 0; const audio_distance = 360 / sections;
+        const change = this.#image && this.#type === 'image' ? this.#image.angle : 0;
+        const loosen = this.#landing === 'loose' ?
+            Math.round(Math.random() * 320 / sections - 320 / sections / 2) : 0;
+        const sprint = Math.floor(this.#duration / 360 / 3) * 360 + point + loosen;
+        let milliseconds = 0; let audio_counter = 0;
+        const audio_distance = 360 / sections;
 
         const ival = setInterval(() => {
-            const slow = Math.min(5, Math.floor((sprint - rotation)/180 * 5));
-            const increase = Math.floor((sprint - rotation)/sprint * 10) + slow + 1;
-            rotation += increase; audio_counter += increase;
-            this.#svg?.style('transform', 'rotate(-'+(rotation%360)+'deg)');
+            let milli = milliseconds;
+            const increase = - sprint * (milli/=this.#duration) * (milli-2) - change;
+            audio_counter += increase - rotation; rotation = increase;
+            this.#svg?.style('transform', 'rotate('+(rotation % 360 * -1)+'deg)');
             if(audio_counter >= audio_distance && this.audio_dir != '') {
-                if(this.audio_dir == 'default') {
+                if(this.audio_dir === 'default') {
                     const audio = new Audio("data:audio/wav;base64," + sound_click);
                     audio_counter -= audio_distance;
                     audio.play();
@@ -120,12 +149,13 @@ export class Roulette {
                     audio.play();
                 }
             }
-            if(rotation >= sprint) {
+            if(rotation >= sprint || milliseconds >= this.#duration) {
                 clearInterval(ival);
                 this.#rotation = rotation%360;
                 this.#rolling = false;
                 this.onstop();
             }
+            milliseconds += 20;
         }, 20);
     }
     
@@ -186,6 +216,18 @@ export class Roulette {
     #drawRoulette() {
         const container = select('#' + this.#roulette_id);
 
+        if( this.#type === 'image' && this.#image) {
+            this.#rotation = - this.#image.angle;
+            this.#svg = container.append('img')
+                .attr('src', this.#image.src)
+                .attr('id', 'roulette-circle')
+                .style('padding', (this.#shrink / 2) + 'px')
+                .style('transform', 'rotate('+this.#image.angle+'deg)')
+                .style('width', (this.#diameter - this.#shrink) + 'px')
+                .style('height', (this.#diameter - this.#shrink) + 'px');
+            return;
+        }
+
         this.#svg = container.append('svg').attr('id', 'roulette-circle')
                 .attr('width', this.#diameter).attr('height', this.#diameter);
 
@@ -216,12 +258,21 @@ export class Roulette {
                 .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
                 .text(this.#addtxt.before + this.#rolls[i] + this.#addtxt.after);
         }
+
+        if( this.#type === 'doughnut' ) {
+            const diameter = this.#doughnut ? this.#doughnut.diameter : radius / 2;
+            const color = this.#doughnut ? this.#doughnut.fill : 'white';
+            this.#svg.append('circle').attr('r', diameter)
+                .attr('cx', this.#diameter / 2).attr('cy', this.#diameter / 2)
+                .style('stroke', this.#border.color).style('fill', color)
+                .style('stroke-width', this.#border.width);
+        }
     }
 
     #drawArrow() {
         const container = select('#' + this.#roulette_id);
-        this.#arrow = container.append(arrows(this.#arrow_html));
-        this.#arrow.attr('id', 'roulette-arrow').style('position', 'absolute')
-            .style('z-index', 1).style('max-width', '60px');
+        this.#d3_arrow = container.append(arrows(this.#arrow.element));
+        this.#d3_arrow.attr('id', 'roulette-arrow').style('position', 'absolute')
+            .style('z-index', 1).style('max-width', this.#arrow.width + 'px');
     }
 }
