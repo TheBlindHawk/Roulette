@@ -5,40 +5,41 @@ import arrows from './images/arrows';
 type Construct = 
 {
     id: string,
-    type: Type,
     rolls: number[] | string[],
-    colors: string[],
-    duration: number,
-    doughnut: DoughnutDetails,
-    image: ImageDetails,
-    arrow: Arrow,
-    landing: Landing,
-    diameter: number,
-    shrink: number
+    type?: Type,
+    colors?: string[],
+    duration?: number,
+    image?: { src?: string, angle?: number },
+    doughnut?: { diameter?: number, fill?: string},
+    arrow?: { element?: string | HTMLElement, width?: number, fill?: string },
+    landing?: Landing,
+    diameter?: number,
+    shrink?: number
 };
 
 type Font = { size: string, weight: number, color: string };
-type Rotation = number | "top" | "left" | "bottom" | "right";
+type Rotation = number | 'top' | 'left' | 'bottom' | 'right';
 type ImageDetails = { src: string, angle: number };
-type DoughnutDetails = { diameter: string, fill: string};
-type Arrow = { element: string | HTMLElement, width: number };
-type Type = 'standard' | 'image' | 'doughnut' | 'casino';
-type Landing = 'precise' | 'loose' | 'edgy';
+type DoughnutDetails = { diameter: number, fill: string};
+type Arrow = { element: string | HTMLElement, width: number, fill: string };
+type Type = 'standard' | 'image' | 'doughnut';
+type Landing = 'precise' | 'loose';
 type HTMLImageSelection = Selection<HTMLImageElement, unknown, HTMLElement, any>;
 type HTMLSelection = Selection<HTMLElement, unknown, HTMLElement, any>;
 type SVGSelection = Selection<SVGSVGElement, unknown, HTMLElement, any>;
 
 export class Roulette {
     #roulette_id: string; #type: Type; #landing: Landing;
-    #image: ImageDetails | undefined;
-    #doughnut: DoughnutDetails | undefined;
+    #image: ImageDetails = { src: '', angle: 0 };
+    #doughnut: DoughnutDetails = { diameter: 40, fill: 'white' };
     #diameter: number; #shrink: number; #duration: number;
     #rolls: number[] | string[]; #colors: string[]; #probs!: number[];
-    #rolling = false; #rotation = 0; #text_rotation = 0; #arrow: Arrow;
+    #rolling = false; #rotation = 0; #text_rotation = 0;
+    #arrow: Arrow = { element: 'standard', width : 60, fill: 'black' };
     #addtxt: {before: string, after: string} = { before: '', after: '' };
     #border: {color: string, width: number} = { color: '#808C94', width: 10 };
     #svg!: SVGSelection | HTMLImageSelection; #d3_arrow!: HTMLSelection;
-    #font: Font = { size: '16px', weight: 1, color: 'black'}
+    #font: Font = { size: '16px', weight: 1, color: 'black'};
     last_roll!: string | number; audio_dir = 'default';
     onstart = function() {};
     onstop = function() {};
@@ -46,15 +47,15 @@ export class Roulette {
     constructor(construct: Construct) {
         this.#roulette_id = construct.id;
         this.#rolls = construct.rolls;
-        this.#type = construct.type ? construct.type : 'standard';
-        this.#landing = construct.landing ? construct.landing : 'loose';
-        this.#image = this.#type === 'image' ? construct.image : undefined;
-        this.#doughnut = this.#type === 'image' ? construct.doughnut : undefined;
-        this.#colors = construct.colors ? construct.colors : [];
-        this.#duration = construct.duration ? construct.duration : 10000;
-        this.#diameter = construct.diameter ? construct.diameter : 360;
-        this.#shrink = construct.shrink ? construct.shrink : 60;
-        this.#arrow = construct.arrow ? construct.arrow : { element: 'default', width : 60 };
+        this.#type = construct.type ?? 'standard';
+        this.#landing = construct.landing ?? 'loose';
+        this.#colors = construct.colors ?? [];
+        this.#duration = construct.duration ?? 10000;
+        this.#diameter = construct.diameter ?? 360;
+        this.#shrink = construct.shrink ?? 60;
+        Object.assign(this.#image, construct.image);
+        Object.assign(this.#doughnut, construct.doughnut);
+        Object.assign(this.#arrow, construct.arrow);
         this.draw();
     }
 
@@ -90,23 +91,23 @@ export class Roulette {
         this.draw();
     }
 
-    setTextFont(size: string, weight: number, color: string) {
+    setTextFont(size = '16px', weight = 1, color = 'black') {
         this.#font = {size: size, weight: weight, color: color}
         this.draw();
     }
 
     rotateText(rotation: Rotation) {
         switch (rotation) {
-            case "top":
+            case 'top':
                 this.#text_rotation = 0;
                 break;
-            case "left":
+            case 'left':
                 this.#text_rotation = 90;
                 break;
-            case "bottom":
+            case 'bottom':
                 this.#text_rotation = 180;
                 break;
-            case "right":
+            case 'right':
                 this.#text_rotation = 270;
                 break;
             default:
@@ -125,13 +126,15 @@ export class Roulette {
 
         let rotation = this.#rotation;
         const sections = this.#rolls.length;
+        const image = this.#type === 'image';
         const point = 360 * (index) / (sections) + 360 / sections / 2;
-        const change = this.#image && this.#type === 'image' ? this.#image.angle : 0;
+        const change = image ? this.#image.angle : 0;
         const loosen = this.#landing === 'loose' ?
             Math.round(Math.random() * 320 / sections - 320 / sections / 2) : 0;
         const sprint = Math.floor(this.#duration / 360 / 3) * 360 + point + loosen;
-        let milliseconds = 0; let audio_counter = 0;
-        const audio_distance = 360 / sections;
+        const audio_distance = 360 / sections; let milliseconds = 0;
+        const audio_next = image ? this.#image.angle : 0;
+        let audio_counter = (this.#rotation + audio_next) % audio_distance;
 
         const ival = setInterval(() => {
             let milli = milliseconds;
@@ -140,7 +143,7 @@ export class Roulette {
             this.#svg?.style('transform', 'rotate('+(rotation % 360 * -1)+'deg)');
             if(audio_counter >= audio_distance && this.audio_dir != '') {
                 if(this.audio_dir === 'default') {
-                    const audio = new Audio("data:audio/wav;base64," + sound_click);
+                    const audio = new Audio('data:audio/wav;base64,' + sound_click);
                     audio_counter -= audio_distance;
                     audio.play();
                 } else {
@@ -208,7 +211,7 @@ export class Roulette {
 
     #resetDraw() {
         const container = select('#' + this.#roulette_id);
-        container.selectAll("*").remove();
+        container.selectAll('*').remove();
         container.style('position','relative').style('display', 'flex')
             .style('justify-content', 'center');
     }
@@ -216,7 +219,7 @@ export class Roulette {
     #drawRoulette() {
         const container = select('#' + this.#roulette_id);
 
-        if( this.#type === 'image' && this.#image) {
+        if( this.#type === 'image' ) {
             this.#rotation = - this.#image.angle;
             this.#svg = container.append('img')
                 .attr('src', this.#image.src)
@@ -260,11 +263,10 @@ export class Roulette {
         }
 
         if( this.#type === 'doughnut' ) {
-            const diameter = this.#doughnut ? this.#doughnut.diameter : radius / 2;
-            const color = this.#doughnut ? this.#doughnut.fill : 'white';
-            this.#svg.append('circle').attr('r', diameter)
+            this.#svg.append('circle').attr('r', this.#doughnut.diameter)
                 .attr('cx', this.#diameter / 2).attr('cy', this.#diameter / 2)
-                .style('stroke', this.#border.color).style('fill', color)
+                .style('stroke', this.#border.color)
+                .style('fill', this.#doughnut.fill)
                 .style('stroke-width', this.#border.width);
         }
     }
@@ -272,7 +274,8 @@ export class Roulette {
     #drawArrow() {
         const container = select('#' + this.#roulette_id);
         this.#d3_arrow = container.append(arrows(this.#arrow.element));
-        this.#d3_arrow.attr('id', 'roulette-arrow').style('position', 'absolute')
+        this.#d3_arrow.attr('id', 'roulette-arrow')
+            .style('position', 'absolute').attr('fill', this.#arrow.fill)
             .style('z-index', 1).style('max-width', this.#arrow.width + 'px');
     }
 }
