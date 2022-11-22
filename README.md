@@ -39,7 +39,16 @@ roulette.roll(8);
 ## Roulette()
 
 ```
-new Roulette(roulette_id, rolls, colors, diameter, shrink);
+new Roulette({
+    id: string,
+    rolls: number[] | string[],
+    colors?: string[],
+    duration?: number,
+    arrow?: Arrow,
+    landing?: Landing,
+    diameter?: number,
+    shrink?: number
+};);
 ```
 
 | Value         | Type     | Default   | comment        |
