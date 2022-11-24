@@ -12,11 +12,15 @@ npm install theblindhawk/roulette
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
 
-## 1.3 Version Updates
+## new in Version 2.0.0
 
-1. you can now rotate the text at will!
-2. the default "click" sound not playing has been fixed
-3. custom arrow svg element has been tested
+1. The code now supports TypeScript!
+2. You can shape the roulette as a doughnut
+3. You replace the roulette with a custom image
+4. You can customize the arrow more easily
+5. The slowdown now has a more "natural" feel to it
+6. You can decide for how log the roulette will keep rolling
+7. The arrow can now land in a "loose" location
 
 ## Usage
 create an html div with ```id=roulette```
@@ -30,13 +34,13 @@ import { Roulette } from "@theblindhawk/roulette";
 
 // the array with all the roulette options
 const rolls = [0, 8, 3, 5, 50];
-let roulette = new Roulette("roulette", rolls);
+let roulette = new Roulette({id: "roulette", rolls: rolls});
 // tell the roulette to roll on said option
 roulette.roll(8);
 ```
 
 
-## Roulette()
+## Standard Roulette
 
 ```
 new Roulette({
@@ -45,21 +49,69 @@ new Roulette({
     colors?: string[],
     duration?: number,
     arrow?: Arrow,
-    landing?: Landing,
+    landing?: 'precise' | 'loose',
     diameter?: number,
     shrink?: number
-};);
+});
 ```
 
-| Value         | Type     | Default   | comment        |
+| Value         | Type     | Default   | Comment        |
 | ------------- | -------- | --------- | -------------- |
-| roulette_id   | string   | required  | The id of the div element that will contain the roulette.  |
+| id            | string   | required  | The id of the div element that will contain the roulette.  |
 | rolls         | array    | required  | The values of each section of the roulette.                |
 | colors        | array    | []        | The colors of the sections of the roulette.                |
+| duration      | number   | 10000     | How long you want the roulette to spin in milliseconds     |
+| arrow         | Arrow    | { ... }   | The design and size of the arrow if you wish to change it  |
+| landing       | Landing  | 'loose'   | You can land at the center of the roll or randomly         |
 | diameter      | numeric  | 310       | the width and height of the roulette element               |
 | shrink        | numeric  | 20        | Shrinks the size of the board in comparison to the overall |
 
 NB: if the number of colors is less than the rolls they will repeat.
+
+### arrow: Arrow
+
+| Value         | Type                 | Default    | Comment        |
+| ------------- | -------------------- | ---------- | -------------- |
+| element       | string / HTMLElement | 'standard' | the arrow as an html string or as an element  |
+| width         | number               | 60         | the width of the arrow element in pixels      |
+| fill          | string               | 'black'    | the color of arrow (if the element is an svg) |
+
+## Doughnut Roulette
+
+```
+new Roulette({
+    ...
+    type: 'doughnut',
+    doughnut: {
+        diameter: number,
+        fill: string
+    }
+});
+```
+
+| Value        | Type   | Default  | Comment        |
+| ------------ | ------ | -------- | -------------- |
+| diameter     | number | required | size of the hole in the doughnut  |
+| fill         | string | 'white'  | color of the hole in the doughnut |
+
+## Image Roulette
+
+```
+new Roulette({
+    ...
+    type: 'image',
+    image: {
+        src: string,
+        angle: number
+    }
+});
+```
+
+| Value        | Type   | Default  | Comment        |
+| ------------ | ------ | -------- | -------------- |
+| src          | string | required | size of the hole in the doughnut   |
+| angle        | number | 0        | fix the image rotation accordingly |
+
 
 ## Customization
 

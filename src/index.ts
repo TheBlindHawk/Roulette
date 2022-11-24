@@ -1,43 +1,19 @@
 import { select, Selection } from 'd3-selection';
 import { sound_click } from './sounds/sounds';
 import arrows from './images/arrows';
-
-type Standard = 
-{
-    id: string,
-    rolls: number[] | string[],
-    colors?: string[],
-    duration?: number,
-    arrow?: { element?: string | HTMLElement, width?: number, fill?: string },
-    landing?: Landing,
-    diameter?: number,
-    shrink?: number,
-};
-
-type Doughnut = Standard & {
-    type: 'doughnut',
-    hole: number,
-    fill?: string,
-}
-
-type Custom = Standard & {
-    type: 'image',
-    src: string,
-    angle?: number
-}
+import { Standard, Custom, Doughnut } from './construct';
 
 type Font = { size: string, weight: number, color: string };
 type Rotation = number | 'top' | 'left' | 'bottom' | 'right';
 type ImageDetails = { src: string, angle: number };
 type DoughnutDetails = { diameter: number, fill: string};
 type Arrow = { element: string | HTMLElement, width: number, fill: string };
-type Landing = 'precise' | 'loose';
 type HTMLImageSelection = Selection<HTMLImageElement, unknown, HTMLElement, any>;
 type HTMLSelection = Selection<HTMLElement, unknown, HTMLElement, any>;
 type SVGSelection = Selection<SVGSVGElement, unknown, HTMLElement, any>;
 
 export class Roulette {
-    #roulette_id: string; #type: string; #landing: Landing;
+    #roulette_id: string; #type: string; #landing: string;
     #image: ImageDetails = { src: '', angle: 0 };
     #doughnut: DoughnutDetails = { diameter: 40, fill: 'white' };
     #diameter: number; #shrink: number; #duration: number;
@@ -61,8 +37,8 @@ export class Roulette {
         this.#duration = construct.duration ?? 10000;
         this.#diameter = construct.diameter ?? 360;
         this.#shrink = construct.shrink ?? 60;
-        Object.assign(this.#image, {src: construct.src, angle: construct.angle});
-        Object.assign(this.#doughnut, { diameter: construct.hole, fill: construct.fill});
+        'image' in construct && Object.assign(this.#image, construct.image);
+        'doughnut' in construct && Object.assign(this.#doughnut, construct.doughnut);
         Object.assign(this.#arrow, construct.arrow);
         this.draw();
     }
