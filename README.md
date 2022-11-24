@@ -121,11 +121,12 @@ new Roulette({
 
 | Function      | Options                | Default             |
 | ------------- | ---------------------- | ------------------- |
-| setSize()     | width, height, *shrink | 310, 310, 20        |
+| setSize()     | width, height, shrink  | 310, 310, 20        |
 | setBorder()   | color, width           | #808C94, 10         |
-| setRollText() | *before, *after        | '', ''              |
+| setRollText() | before, after          | '', ''              |
 | rotateText()  | rotation(int/string)   | 'circular-inner'    |
 | setTextFont() | size, weight, color    | '16px', 1, '#black' |
+| setDuration() | milliseconds           | 10000               
 
 </br>
 
@@ -162,14 +163,26 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 
 ## Examples
 
-Here is a fully set up roulette example
+Here is a fully customized standard roulette example
 ```javascript
 import { Roulette } from "@theblindhawk/roulette";
 
 const rolls = [0, 8, 3, 5, 50];
 const colors = ["#27296a", "#db5a52"];
 // svg element width = 500x500, wheel drawing width = 460x460
-let roulette = new Roulette("roulette", rolls, colors, 500, 40);
+const roulette = new Roulette({
+    id: "roulette",
+    rolls: rolls,
+    colors: colors,
+    duration: 5000,
+    arrow: {
+        width: 80,
+        fill: 'grey'
+    },
+    landing: 'precise',
+    diameter: 500,
+    shrink: 40
+});
 roulette.audio_dir = 'sounds/my_click.wav";
 
 roulette.onstop = function() { console.log(roulette.last_roll) }
@@ -182,7 +195,7 @@ The probabilities[] array will accept an array the same lenght of the rolls[] co
 const rolls = [0, 8, 3, 5, 50];
 // 10% chance for 0/8/3 and 35% chance for 5/50
 const probabilities = [10, 10, 10, 35, 35]
-let roulette = new Roulette("roulette", rolls);
+const roulette = new Roulette({id: "roulette", rolls: rolls});
 
 roulette.setProbabilities(probabilities);
 roulette.rollProbabilities();
@@ -214,8 +227,8 @@ For changing the font of the roulette you just need to change the css of the div
 The Roulette will automatically display the values passed in the roll[].  
 But if you need to add some text before or after the rolls use the following.  
 ```javascript
-const probabilities = ['first', 'second']
-let roulette = new Roulette("roulette", rolls);
+const probabilities = ['first', 'second'];
+const roulette = new Roulette({id: "roulette", rolls: rolls});
 
 // roll 1: 'the first value'
 // roll 2: 'the second value'
