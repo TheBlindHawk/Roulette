@@ -1,9 +1,11 @@
-![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
-![](https://img.shields.io/npm/v/@theblindhawk/roulette)
-![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
-![](https://img.shields.io/librariesio/release/npm/d3)
+<div align="center">
+    ![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
+    ![](https://img.shields.io/npm/v/@theblindhawk/roulette)
+    ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
+    ![](https://img.shields.io/librariesio/release/npm/d3)
+</div>
 
-## Customizable Roulette Library
+<h1 align="center">Customizable Roulette Library</h1>
 
 NPM package installation
 ```
@@ -12,15 +14,13 @@ npm install @theblindhawk/roulette
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
 
-## new in Version 2.0.0
+## Features
 
-1. The code now supports TypeScript!
-2. You can shape the roulette as a doughnut
-3. You replace the roulette with a custom image
-4. You can customize the arrow more easily
-5. The slowdown now has a more "natural" feel to it
-6. You can decide for how log the roulette will keep rolling
-7. The arrow can now land in a "loose" location
+- Compatible with both Javascript and TypeScript
+- Detailedly customize the view of the Roulette
+- Easily control the value the Roulette will land at
+- Customize the click sound and the spin duration
+- Import any of your own roulette or arrow images
 
 ## Usage
 create an html div with ```id=roulette```
@@ -43,7 +43,7 @@ roulette.roll(8);
 ## Roulette
 
 ```typescript
-new Roulette({
+interface Roulette({
     id: string,
     rolls: number[] | string[],
     colors?: string[],
@@ -81,7 +81,7 @@ NB: there are currently three ready made arrow svgs: 'standard', 'thin', 'sharp'
 ### Doughnut Roulette
 
 ```typescript
-new Roulette({
+interface Roulette({
     ...
     type: 'doughnut',
     doughnut: {
@@ -99,7 +99,7 @@ new Roulette({
 ### Image Roulette
 
 ```typescript
-new Roulette({
+interface Roulette({
     ...
     type: 'image',
     image: {
