@@ -3,11 +3,11 @@
 ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
 ![](https://img.shields.io/librariesio/release/npm/d3)
 
-## A simple roulette library
+## Customizable Roulette Library
 
 NPM package installation
 ```
-npm install theblindhawk/roulette
+npm install @theblindhawk/roulette
 ```
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
 ![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
@@ -40,9 +40,9 @@ roulette.roll(8);
 ```
 
 
-## Standard Roulette
+## Roulette
 
-```
+```typescript
 new Roulette({
     id: string,
     rolls: number[] | string[],
@@ -76,9 +76,11 @@ NB: if the number of colors is less than the rolls they will repeat.
 | width         | number               | 60         | the width of the arrow element in pixels      |
 | fill          | string               | 'black'    | the color of arrow (if the element is an svg) |
 
-## Doughnut Roulette
+NB: there are currently three ready made arrow svgs: 'standard', 'thin', 'sharp'.
 
-```
+### Doughnut Roulette
+
+```typescript
 new Roulette({
     ...
     type: 'doughnut',
@@ -94,9 +96,9 @@ new Roulette({
 | diameter     | number | required | size of the hole in the doughnut  |
 | fill         | string | 'white'  | color of the hole in the doughnut |
 
-## Image Roulette
+### Image Roulette
 
-```
+```typescript
 new Roulette({
     ...
     type: 'image',
@@ -126,7 +128,7 @@ new Roulette({
 | setRollText() | before, after          | '', ''              |
 | rotateText()  | rotation(int/string)   | 'circular-inner'    |
 | setTextFont() | size, weight, color    | '16px', 1, '#black' |
-| setDuration() | milliseconds           | 10000               
+| setDuration() | milliseconds           | 10000               |
 
 </br>
 
@@ -183,7 +185,7 @@ const roulette = new Roulette({
     diameter: 500,
     shrink: 40
 });
-roulette.audio_dir = 'sounds/my_click.wav";
+roulette.audio_dir = 'sounds/my_click.wav';
 
 roulette.onstop = function() { console.log(roulette.last_roll) }
 roulette.rollRandom();
