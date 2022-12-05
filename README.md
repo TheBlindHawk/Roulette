@@ -19,6 +19,11 @@ npm install @theblindhawk/roulette
 - Customize the click sound and the spin duration
 - Import any of your own roulette or arrow images
 
+## Planned Features
+
+- The possibility of moving the arrow SVG to a different position
+- A casino shaped Roulette to be added as one of the defaults
+
 ## Usage
 create an html div with ```id=roulette```
 ```html
@@ -35,7 +40,6 @@ let roulette = new Roulette({id: "roulette", rolls: rolls});
 // tell the roulette to roll on said option
 roulette.roll(8);
 ```
-
 
 ## Roulette
 
