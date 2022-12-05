@@ -50,7 +50,7 @@ let roulette = new Roulette({id: "roulette", rolls: rolls});
 roulette.roll(8);
 ```
 
-# Table of Contents
+## Table of Contents
 - [Standard Roulette](#roulette)
   - [Doughnut Roulette](#doughnut-roulette)
   - [Image Roulette](#image-roulette)
