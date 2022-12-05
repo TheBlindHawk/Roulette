@@ -33,6 +33,16 @@ npm install @theblindhawk/roulette
 - The possibility of moving the arrow SVG to a different position
 - A casino shaped Roulette to be added as one of the defaults
 
+## Table of Contents
+- [Usage](#usage)
+  - [Standard Roulette](#roulette)
+  - [Doughnut Roulette](#doughnut-roulette)
+  - [Image Roulette](#image-roulette)
+- [Customization](#customization)
+- [Call Actions](#actions)
+- [Public Variables](#variables)
+- [More Examples](#examples)
+
 ## Usage
 create an html div with ```id=roulette```
 ```html
@@ -49,15 +59,6 @@ let roulette = new Roulette({id: "roulette", rolls: rolls});
 // tell the roulette to roll on said option
 roulette.roll(8);
 ```
-
-## Table of Contents
-- [Standard Roulette](#roulette)
-  - [Doughnut Roulette](#doughnut-roulette)
-  - [Image Roulette](#image-roulette)
-- [Customization](#customization)
-- [Call Actions](#actions)
-- [Public Variables](#variables)
-- [More Examples](#examples)
 
 ## Roulette
 
