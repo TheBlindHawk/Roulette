@@ -1,26 +1,37 @@
+<h1 align="center">Customizable Roulette Library</h1>
+
+<div align="center">
+    
 ![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
 ![](https://img.shields.io/npm/v/@theblindhawk/roulette)
 ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
 ![](https://img.shields.io/librariesio/release/npm/d3)
 
-## A simple roulette library
+</div>
 
-NPM package installation
 ```
-npm install theblindhawk/roulette
+npm install @theblindhawk/roulette
 ```
-![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
-![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
 
-## new in Version 2.0.0
+<div align="center">
 
-1. The code now supports TypeScript!
-2. You can shape the roulette as a doughnut
-3. You replace the roulette with a custom image
-4. You can customize the arrow more easily
-5. The slowdown now has a more "natural" feel to it
-6. You can decide for how log the roulette will keep rolling
-7. The arrow can now land in a "loose" location
+![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/sample_1.png?raw=true)
+![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/sample_2.png?raw=true)
+
+</div>
+
+## Features
+
+- **Compatible** with both Javascript and TypeScript
+- **Customize** the view of the Roulette down to the details
+- **Customize** the click sound and the spin duration
+- **Control** the value the Roulette will land at
+- **Import** any of your own roulette or arrow **images**
+
+## Planned Features
+
+- The possibility of moving the arrow SVG to a different position
+- A casino shaped Roulette to be added as one of the defaults
 
 ## Usage
 create an html div with ```id=roulette```
@@ -39,11 +50,19 @@ let roulette = new Roulette({id: "roulette", rolls: rolls});
 roulette.roll(8);
 ```
 
+# Table of Contents
+1. [Standard Roulette](#roulette)
+2. [Doughnut Roulette](#doughnut-roulette)
+3. [Image Roulette](#image-roulette)
+4. [Customization](#customization)
+4. [Actions](#actions)
+4. [Variables](#variables)
+4. [Examples](#examples)
 
-## Standard Roulette
+## Roulette
 
-```
-new Roulette({
+```typescript
+interface Roulette({
     id: string,
     rolls: number[] | string[],
     colors?: string[],
@@ -76,10 +95,12 @@ NB: if the number of colors is less than the rolls they will repeat.
 | width         | number               | 60         | the width of the arrow element in pixels      |
 | fill          | string               | 'black'    | the color of arrow (if the element is an svg) |
 
-## Doughnut Roulette
+NB: there are currently three ready made arrow svgs: 'standard', 'thin', 'sharp'.
 
-```
-new Roulette({
+### Doughnut Roulette
+
+```typescript
+interface Roulette({
     ...
     type: 'doughnut',
     doughnut: {
@@ -94,10 +115,10 @@ new Roulette({
 | diameter     | number | required | size of the hole in the doughnut  |
 | fill         | string | 'white'  | color of the hole in the doughnut |
 
-## Image Roulette
+### Image Roulette
 
-```
-new Roulette({
+```typescript
+interface Roulette({
     ...
     type: 'image',
     image: {
@@ -126,7 +147,7 @@ new Roulette({
 | setRollText() | before, after          | '', ''              |
 | rotateText()  | rotation(int/string)   | 'circular-inner'    |
 | setTextFont() | size, weight, color    | '16px', 1, '#black' |
-| setDuration() | milliseconds           | 10000               
+| setDuration() | milliseconds           | 10000               |
 
 </br>
 
@@ -140,7 +161,7 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 
 </br>
 
-### call actions
+## Actions
 
 | Function                 | Comment                                                 |
 | ------------------------ | ------------------------------------------------------- |
@@ -152,7 +173,7 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 
 </br>
 
-## public variables
+## Variables
 
 | Variable      | Type     | Comment                            |
 | ------------- | -------- |----------------------------------- |
@@ -183,7 +204,7 @@ const roulette = new Roulette({
     diameter: 500,
     shrink: 40
 });
-roulette.audio_dir = 'sounds/my_click.wav";
+roulette.audio_dir = 'sounds/my_click.wav';
 
 roulette.onstop = function() { console.log(roulette.last_roll) }
 roulette.rollRandom();

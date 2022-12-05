@@ -2,6 +2,7 @@ import { select, Selection } from 'd3-selection';
 import { sound_click } from './sounds/sounds';
 import arrows from './images/arrows';
 import { Standard, Custom, Doughnut } from './construct';
+import errors from './errors';
 
 type Font = { size: string, weight: number, color: string };
 type Rotation = number | 'top' | 'left' | 'bottom' | 'right';
@@ -61,8 +62,10 @@ export class Roulette {
     }
 
     setProbabilities(probabilities: number[]) {
-        if(this.#rolls.length == probabilities.length)
-            this.#probs = probabilities;
+        if(this.#rolls.length !== probabilities.length){
+            return console.error(errors.probability_mismatch);
+        }
+        this.#probs = probabilities;
     }
 
     setDuration(milli: number) {
@@ -102,7 +105,9 @@ export class Roulette {
     }
 
     rollByIndex(index: number) {
-        if(this.#rolling) { return; }
+        if(this.#rolling) {
+            return console.error(errors.roulette_is_rolling);
+        }
 
         this.onstart();
         this.#rolling = true;
@@ -147,7 +152,9 @@ export class Roulette {
     }
     
     rollProbabilities(probs: number[] = this.#probs) {
-        if(probs.length <= 0 || this.#rolls.length != probs.length) { return }
+        if(probs.length <= 0 || this.#rolls.length != probs.length) {
+            return console.error(errors.probability_mismatch);
+        }
 
         let counter = 0;
         const total = probs.reduce((a, b) => a + b, 0);
@@ -157,6 +164,7 @@ export class Roulette {
             counter += probs[i];
             if(counter > random) {
                 this.rollByIndex(i);
+                break;
             }
         }
     }
@@ -170,6 +178,9 @@ export class Roulette {
         const indexes: number[] = [];
         for (let i = 0; i < this.#rolls.length; i++) {
             if(this.#rolls[i] === result) { indexes.push(i); }
+        }
+        if(indexes.length <= 0 ) { 
+            return console.error(errors.roulette_no_such_value);
         }
         const random = Math.floor(Math.random() * indexes.length);
         this.rollByIndex(indexes[random]);
