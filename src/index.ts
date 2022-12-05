@@ -179,6 +179,9 @@ export class Roulette {
         for (let i = 0; i < this.#rolls.length; i++) {
             if(this.#rolls[i] === result) { indexes.push(i); }
         }
+        if(indexes.length <= 0 ) { 
+            return console.error(errors.roulette_no_such_value);
+        }
         const random = Math.floor(Math.random() * indexes.length);
         this.rollByIndex(indexes[random]);
     }
