@@ -51,13 +51,13 @@ roulette.roll(8);
 ```
 
 # Table of Contents
-1. [Standard Roulette](#roulette)
-2. [Doughnut Roulette](#doughnut-roulette)
-3. [Image Roulette](#image-roulette)
-4. [Customization](#customization)
-4. [Actions](#actions)
-4. [Variables](#variables)
-4. [Examples](#examples)
+- [Standard Roulette](#roulette)
+  - [Doughnut Roulette](#doughnut-roulette)
+  - [Image Roulette](#image-roulette)
+- [Customization](#customization)
+- [Call Actions](#actions)
+- [Public Variables](#variables)
+- [More Examples](#examples)
 
 ## Roulette
 
