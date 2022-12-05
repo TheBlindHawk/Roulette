@@ -1,10 +1,12 @@
 <h1 align="center">Customizable Roulette Library</h1>
 
 <div align="center">
+    
 ![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
 ![](https://img.shields.io/npm/v/@theblindhawk/roulette)
 ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
 ![](https://img.shields.io/librariesio/release/npm/d3)
+
 </div>
 
 ```
