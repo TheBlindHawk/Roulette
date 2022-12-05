@@ -13,16 +13,20 @@
 npm install @theblindhawk/roulette
 ```
 
-![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/black_white.png?raw=true)
-![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/colors.png?raw=true)
+<div align="center">
+
+![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/sample_1.png?raw=true)
+![alt text](https://github.com/TheBlindHawk/Roulette/blob/main/docs/sample_2.png?raw=true)
+
+</div>
 
 ## Features
 
-- Compatible with both Javascript and TypeScript
-- Detailedly customize the view of the Roulette
-- Easily control the value the Roulette will land at
-- Customize the click sound and the spin duration
-- Import any of your own roulette or arrow images
+- **Compatible** with both Javascript and TypeScript
+- **Customize** the view of the Roulette down to the details
+- **Customize** the click sound and the spin duration
+- **Control** the value the Roulette will land at
+- **Import** any of your own roulette or arrow **images**
 
 ## Planned Features
 
@@ -45,6 +49,15 @@ let roulette = new Roulette({id: "roulette", rolls: rolls});
 // tell the roulette to roll on said option
 roulette.roll(8);
 ```
+
+# Table of Contents
+1. [Standard Roulette](#roulette)
+2. [Doughnut Roulette](#doughnut-roulette)
+3. [Image Roulette](#image-roulette)
+4. [Customization](#customization)
+4. [Actions](#actions)
+4. [Variables](#variables)
+4. [Examples](#examples)
 
 ## Roulette
 
@@ -148,7 +161,7 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 
 </br>
 
-### call actions
+## Actions
 
 | Function                 | Comment                                                 |
 | ------------------------ | ------------------------------------------------------- |
@@ -160,7 +173,7 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 
 </br>
 
-## public variables
+## Variables
 
 | Variable      | Type     | Comment                            |
 | ------------- | -------- |----------------------------------- |
