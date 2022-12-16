@@ -4,10 +4,18 @@ type Construct =
     rolls: number[] | string[],
     colors?: string[],
     duration?: number,
-    arrow?: { element?: string | HTMLElement, width?: number, fill?: string },
+    arrow?: newArrow,
     landing?: 'precise' | 'loose',
+    rotate?: number,
     diameter?: number,
     shrink?: number,
+};
+
+export type newArrow = {
+    element?: string | HTMLElement,
+    width?: number,
+    fill?: string,
+    rotate?: number
 };
 
 export type Standard = Construct & {

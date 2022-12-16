@@ -1,14 +1,14 @@
 import { select, Selection } from 'd3-selection';
 import { sound_click } from './sounds/sounds';
 import arrows from './images/arrows';
-import { Standard, Custom, Doughnut } from './construct';
+import { Standard, Custom, Doughnut, newArrow } from './construct';
 import errors from './errors';
 
 type Font = { size: string, weight: number, color: string };
 type Rotation = number | 'top' | 'left' | 'bottom' | 'right';
 type ImageDetails = { src: string, angle: number };
 type DoughnutDetails = { diameter: number, fill: string};
-type Arrow = { element: string | HTMLElement, width: number, fill: string };
+type Arrow = { element: string | HTMLElement, width: number, fill: string, rotate: number };
 type HTMLImageSelection = Selection<HTMLImageElement, unknown, HTMLElement, any>;
 type HTMLSelection = Selection<HTMLElement, unknown, HTMLElement, any>;
 type SVGSelection = Selection<SVGSVGElement, unknown, HTMLElement, any>;
@@ -19,8 +19,8 @@ export class Roulette {
     #doughnut: DoughnutDetails = { diameter: 40, fill: 'white' };
     #diameter: number; #shrink: number; #duration: number;
     #rolls: number[] | string[]; #colors: string[]; #probs!: number[];
-    #rolling = false; #rotation = 0; #text_rotation = 0;
-    #arrow: Arrow = { element: 'standard', width : 60, fill: 'black' };
+    #rolling = false; #rotation: number; #text_rotation = 0;
+    #arrow: Arrow = { element: 'standard', width : 60, fill: 'black', rotate: 0 };
     #addtxt: {before: string, after: string} = { before: '', after: '' };
     #border: {color: string, width: number} = { color: '#808C94', width: 10 };
     #svg!: SVGSelection | HTMLImageSelection; #d3_arrow!: HTMLSelection;
@@ -38,6 +38,7 @@ export class Roulette {
         this.#duration = construct.duration ?? 10000;
         this.#diameter = construct.diameter ?? 360;
         this.#shrink = construct.shrink ?? 60;
+        this.#rotation = construct.rotate ?? 0;
         'image' in construct && Object.assign(this.#image, construct.image);
         'doughnut' in construct && Object.assign(this.#doughnut, construct.doughnut);
         Object.assign(this.#arrow, construct.arrow);
@@ -56,14 +57,14 @@ export class Roulette {
         this.draw();
     }
 
-    setArrow(arrow: Arrow) {
-        this.#arrow = arrow;
+    setArrow(arrow: newArrow) {
+        this.#arrow = { ...this.#arrow, ...arrow };
         this.draw();
     }
 
     setProbabilities(probabilities: number[]) {
         if(this.#rolls.length !== probabilities.length){
-            return console.error(errors.probability_mismatch);
+            throw errors.probability_mismatch;
         }
         this.#probs = probabilities;
     }
@@ -105,9 +106,7 @@ export class Roulette {
     }
 
     rollByIndex(index: number) {
-        if(this.#rolling) {
-            return console.error(errors.roulette_is_rolling);
-        }
+        if(this.#rolling) { throw errors.roulette_is_rolling; }
 
         this.onstart();
         this.#rolling = true;
@@ -153,7 +152,7 @@ export class Roulette {
     
     rollProbabilities(probs: number[] = this.#probs) {
         if(probs.length <= 0 || this.#rolls.length != probs.length) {
-            return console.error(errors.probability_mismatch);
+            throw errors.probability_mismatch;
         }
 
         let counter = 0;
@@ -222,12 +221,14 @@ export class Roulette {
                 .style('padding', (this.#shrink / 2) + 'px')
                 .style('transform', 'rotate('+this.#image.angle+'deg)')
                 .style('width', (this.#diameter - this.#shrink) + 'px')
-                .style('height', (this.#diameter - this.#shrink) + 'px');
+                .style('height', (this.#diameter - this.#shrink) + 'px')
+                .style('transform', 'rotate('+(this.#rotation * -1)+'deg)');;
             return;
         }
 
         this.#svg = container.append('svg').attr('id', 'roulette-circle')
-                .attr('width', this.#diameter).attr('height', this.#diameter);
+                .attr('width', this.#diameter).attr('height', this.#diameter)
+                .style('transform', 'rotate('+(this.#rotation * -1)+'deg)');;
 
         const sections = this.#rolls.length;
         const padding = this.#shrink / 2;
