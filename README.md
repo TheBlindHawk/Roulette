@@ -20,6 +20,11 @@ npm install @theblindhawk/roulette
 
 </div>
 
+## Important Changes
+
+**V 2.1.0** Use the contructor to change the audio directory (audio_dir has been removed)
+**V 2.1.0** roulette functions will now thow an error when passing unprocessable data
+
 ## Features
 
 - **Compatible** with both Javascript and TypeScript

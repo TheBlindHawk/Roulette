@@ -25,7 +25,8 @@ export class Roulette {
     #border: {color: string, width: number} = { color: '#808C94', width: 10 };
     #svg!: SVGSelection | HTMLImageSelection; #d3_arrow!: HTMLSelection;
     #font: Font = { size: '16px', weight: 1, color: 'black'};
-    last_roll!: string | number; audio_dir = 'default';
+    #audio = { play: 'multiple', dir: 'default' }
+    last_roll!: string | number;
     onstart = function() {};
     onstop = function() {};
 
@@ -39,6 +40,7 @@ export class Roulette {
         this.#diameter = construct.diameter ?? 360;
         this.#shrink = construct.shrink ?? 60;
         this.#rotation = construct.rotate ?? 0;
+        'audio' in construct && Object.assign(this.#audio, construct.audio);
         'image' in construct && Object.assign(this.#image, construct.image);
         'doughnut' in construct && Object.assign(this.#doughnut, construct.doughnut);
         Object.assign(this.#arrow, construct.arrow);
@@ -129,13 +131,13 @@ export class Roulette {
             const increase = - sprint * (milli/=this.#duration) * (milli-2) - change;
             audio_counter += increase - rotation; rotation = increase;
             this.#svg?.style('transform', 'rotate('+(rotation % 360 * -1)+'deg)');
-            if(audio_counter >= audio_distance && this.audio_dir != '') {
-                if(this.audio_dir === 'default') {
+            if(audio_counter >= audio_distance && this.#audio.dir != '') {
+                if(this.#audio.dir === 'default') {
                     const audio = new Audio('data:audio/wav;base64,' + sound_click);
                     audio_counter -= audio_distance;
                     audio.play();
                 } else {
-                    const audio = new Audio(this.audio_dir);
+                    const audio = new Audio(this.#audio.dir);
                     audio_counter -= audio_distance;
                     audio.play();
                 }
@@ -214,7 +216,6 @@ export class Roulette {
         const container = select('#' + this.#roulette_id);
 
         if( this.#type === 'image' ) {
-            this.#rotation = - this.#image.angle;
             this.#svg = container.append('img')
                 .attr('src', this.#image.src)
                 .attr('id', 'roulette-circle')
@@ -222,13 +223,13 @@ export class Roulette {
                 .style('transform', 'rotate('+this.#image.angle+'deg)')
                 .style('width', (this.#diameter - this.#shrink) + 'px')
                 .style('height', (this.#diameter - this.#shrink) + 'px')
-                .style('transform', 'rotate('+(this.#rotation * -1)+'deg)');;
+                .style('transform', 'rotate('+((this.#rotation - this.#image.angle) * -1)+'deg)');
             return;
         }
 
         this.#svg = container.append('svg').attr('id', 'roulette-circle')
                 .attr('width', this.#diameter).attr('height', this.#diameter)
-                .style('transform', 'rotate('+(this.#rotation * -1)+'deg)');;
+                .style('transform', 'rotate('+(this.#rotation * -1)+'deg)');
 
         const sections = this.#rolls.length;
         const padding = this.#shrink / 2;

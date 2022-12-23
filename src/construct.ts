@@ -2,10 +2,15 @@ type Construct =
 {
     id: string,
     rolls: number[] | string[],
+    probabilitiess?: number[],
     colors?: string[],
     duration?: number,
     arrow?: newArrow,
     landing?: 'precise' | 'loose',
+    audio?: {
+        play?: 'once' | 'multiple',
+        dir?: string,
+    },
     rotate?: number,
     diameter?: number,
     shrink?: number,
