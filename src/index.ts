@@ -27,8 +27,8 @@ export class Roulette {
     #font: Font = { size: '16px', weight: 1, color: 'black'};
     #audio = { play: 'multiple', dir: 'default' }
     last_roll!: string | number;
-    onstart = function() {};
-    onstop = function() {};
+    onstart = function(roll: number | string) { roll; };
+    onstop = function(roll: number | string) { roll; };
 
     constructor(construct: Standard | Custom | Doughnut) {
         this.#roulette_id = construct.id;
@@ -39,7 +39,7 @@ export class Roulette {
         this.#duration = construct.duration ?? 10000;
         this.#diameter = construct.diameter ?? 360;
         this.#shrink = construct.shrink ?? 60;
-        this.#rotation = construct.rotate ?? 0;
+        this.#rotation = - (construct.rotate ?? 0);
         'audio' in construct && Object.assign(this.#audio, construct.audio);
         'image' in construct && Object.assign(this.#image, construct.image);
         'doughnut' in construct && Object.assign(this.#doughnut, construct.doughnut);
@@ -110,14 +110,14 @@ export class Roulette {
     rollByIndex(index: number) {
         if(this.#rolling) { throw errors.roulette_is_rolling; }
 
-        this.onstart();
+        this.onstart(this.#rolls[index]);
         this.#rolling = true;
         this.last_roll = this.#rolls[index];
 
         let rotation = this.#rotation;
         const sections = this.#rolls.length;
         const image = this.#type === 'image';
-        const point = 360 * (index) / (sections) + 360 / sections / 2;
+        const point = 360 * (index) / (sections) + 360 / sections / 2 - this.#arrow.rotate;
         const change = image ? this.#image.angle : 0;
         const loosen = this.#landing === 'loose' ?
             Math.round(Math.random() * 320 / sections - 320 / sections / 2) : 0;
@@ -125,28 +125,29 @@ export class Roulette {
         const audio_distance = 360 / sections; let milliseconds = 0;
         const audio_next = image ? this.#image.angle : 0;
         let audio_counter = (this.#rotation + audio_next) % audio_distance;
+        if(this.#audio.play == 'once') {
+            new Audio(this.#audio.dir).play();
+        }
 
         const ival = setInterval(() => {
             let milli = milliseconds;
             const increase = - sprint * (milli/=this.#duration) * (milli-2) - change;
             audio_counter += increase - rotation; rotation = increase;
             this.#svg?.style('transform', 'rotate('+(rotation % 360 * -1)+'deg)');
-            if(audio_counter >= audio_distance && this.#audio.dir != '') {
+            if(audio_counter >= audio_distance && this.#audio.play == 'multiple' && this.#audio.dir != '') {
                 if(this.#audio.dir === 'default') {
-                    const audio = new Audio('data:audio/wav;base64,' + sound_click);
+                    new Audio('data:audio/wav;base64,' + sound_click).play();
                     audio_counter -= audio_distance;
-                    audio.play();
                 } else {
-                    const audio = new Audio(this.#audio.dir);
+                    new Audio(this.#audio.dir).play();
                     audio_counter -= audio_distance;
-                    audio.play();
                 }
             }
             if(rotation >= sprint || milliseconds >= this.#duration) {
                 clearInterval(ival);
                 this.#rotation = rotation%360;
                 this.#rolling = false;
-                this.onstop();
+                this.onstop(this.#rolls[index]);
             }
             milliseconds += 20;
         }, 20);
@@ -272,6 +273,8 @@ export class Roulette {
         const container = select('#' + this.#roulette_id);
         this.#d3_arrow = container.append(arrows(this.#arrow.element));
         this.#d3_arrow.attr('id', 'roulette-arrow')
+            .style('padding-bottom', this.#diameter - this.#shrink - this.#arrow.width)
+            .attr('transform', 'rotate('+ this.#arrow.rotate +')')
             .style('position', 'absolute').attr('fill', this.#arrow.fill)
             .style('z-index', 1).style('max-width', this.#arrow.width + 'px');
     }
