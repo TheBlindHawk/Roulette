@@ -11,10 +11,18 @@ type Construct =
         play?: 'once' | 'multiple',
         dir?: string,
     },
+    text_font?: newFont,
     rotate?: number,
     diameter?: number,
     shrink?: number,
 };
+
+export type newFont = {
+    size?: number,
+    weight?: number,
+    color?: string,
+    rotate?: number
+}
 
 export type newArrow = {
     element?: string | HTMLElement,

@@ -20,10 +20,10 @@ npm install @theblindhawk/roulette
 
 </div>
 
-## Important Changes
+## Breaking Changes
 
 **V 2.1.0** Use the contructor to change the audio directory (audio_dir has been removed)
-**V 2.1.0** roulette functions will now thow an error when passing unprocessable data
+**V 2.1.0** roulette functions will now thow an error when receiving unprocessable data
 
 ## Features
 
@@ -35,7 +35,6 @@ npm install @theblindhawk/roulette
 
 ## Planned Features
 
-- The possibility of moving the arrow SVG to a different position
 - A casino shaped Roulette to be added as one of the defaults
 
 ## Table of Contents
@@ -75,6 +74,7 @@ interface Roulette({
     duration?: number,
     arrow?: Arrow,
     landing?: 'precise' | 'loose',
+    rotate?: number,
     diameter?: number,
     shrink?: number
 });
@@ -88,8 +88,9 @@ interface Roulette({
 | duration      | number   | 10000     | How long you want the roulette to spin in milliseconds     |
 | arrow         | Arrow    | { ... }   | The design and size of the arrow if you wish to change it  |
 | landing       | Landing  | 'loose'   | You can land at the center of the roll or randomly         |
-| diameter      | numeric  | 310       | the width and height of the roulette element               |
-| shrink        | numeric  | 20        | Shrinks the size of the board in comparison to the overall |
+| rotate        | number   | 0         | Initially rotate the roulette to a different degree        |
+| diameter      | number   | 310       | the width and height of the roulette element               |
+| shrink        | number   | 20        | Shrinks the size of the board in comparison to the overall |
 
 NB: if the number of colors is less than the rolls they will repeat.
 
@@ -100,6 +101,7 @@ NB: if the number of colors is less than the rolls they will repeat.
 | element       | string / HTMLElement | 'standard' | the arrow as an html string or as an element  |
 | width         | number               | 60         | the width of the arrow element in pixels      |
 | fill          | string               | 'black'    | the color of arrow (if the element is an svg) |
+| rotate        | number               | 0          | rotate the arrow to a different position      |
 
 NB: there are currently three ready made arrow svgs: 'standard', 'thin', 'sharp'.
 
@@ -111,7 +113,7 @@ interface Roulette({
     type: 'doughnut',
     doughnut: {
         diameter: number,
-        fill: string
+        fill: string,
     }
 });
 ```
@@ -212,7 +214,7 @@ const roulette = new Roulette({
 });
 roulette.audio_dir = 'sounds/my_click.wav';
 
-roulette.onstop = function() { console.log(roulette.last_roll) }
+roulette.onstop = function(last_roll) { console.log(last_roll) }
 roulette.rollRandom();
 ```
 
@@ -247,9 +249,12 @@ roulette.rollProbabilities([ 36, 36, 72 ]);
 
 ### Edit Roll Text
 
-For changing the font of the roulette you just need to change the css of the div containing it.  
+For changing the font of the roulette you can either change the font of the container or rely on ```setTextFont()```.
 ```html
 <div class="change_font_here" id="roulette"></div>
+```
+```javascript
+roulette.setRollText(20, 600, 'grey');
 ```
 The Roulette will automatically display the values passed in the roll[].  
 But if you need to add some text before or after the rolls use the following.  
