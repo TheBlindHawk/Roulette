@@ -22,8 +22,8 @@ npm install @theblindhawk/roulette
 
 ## Breaking Changes
 
-**V 2.1.0** Use the contructor to change the audio directory (audio_dir has been removed)
-**V 2.1.0** roulette functions will now thow an error when receiving unprocessable data
+**V 2.1.0** Use the contructor to change the audio directory (audio_dir has been removed)  
+**V 2.1.0** roulette functions will now thow an error when receiving unprocessable data  
 
 ## Features
 
@@ -74,6 +74,7 @@ interface Roulette({
     duration?: number,
     arrow?: Arrow,
     landing?: 'precise' | 'loose',
+    audio?: { play?: 'once' | 'multiple', dir?: string },
     rotate?: number,
     diameter?: number,
     shrink?: number
@@ -88,6 +89,7 @@ interface Roulette({
 | duration      | number   | 10000     | How long you want the roulette to spin in milliseconds     |
 | arrow         | Arrow    | { ... }   | The design and size of the arrow if you wish to change it  |
 | landing       | Landing  | 'loose'   | You can land at the center of the roll or randomly         |
+| audio         | object   | { ... }   | set up when the audio plays and its directory              |
 | rotate        | number   | 0         | Initially rotate the roulette to a different degree        |
 | diameter      | number   | 310       | the width and height of the roulette element               |
 | shrink        | number   | 20        | Shrinks the size of the board in comparison to the overall |
