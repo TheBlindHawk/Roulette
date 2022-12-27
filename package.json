@@ -1,6 +1,6 @@
 {
   "name": "@theblindhawk/roulette",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "a thoroughly customizable roulette wheel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,8 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "uglifyjs-folder": "^3.1.4"
   },
   "scripts": {
     "test": "jest",
@@ -35,7 +36,7 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier -w src/sounds",
     "fix:eslint": "npm run lint:eslint --fix",
-    "build": "tsc"
+    "build": "tsc && uglifyjs-folder ./dist -e -o=./dist -x=.js"
   },
   "repository": {
     "type": "git",

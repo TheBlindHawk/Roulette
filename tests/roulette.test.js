@@ -35,14 +35,6 @@ test('roll test audio directory changed', () => {
     expect(roulette.last_roll).toBe(1);
 });
 
-test('roll test spam roll is rejected', () => {
-    const roulette = new Roulette({roulette_id: 'roulette', rolls: ['a', 'b', 'c']});
-    roulette.roll('a');
-    roulette.roll('b');
-    jest.advanceTimersByTime(10000);
-    expect(roulette.last_roll).toBe('a');
-});
-
 test('rollProbabilities test direct input', () => {
     const roulette = new Roulette({roulette_id: 'roulette', rolls: [1, 2, 3]});
     roulette.rollProbabilities([0, 0, 1]);
@@ -56,13 +48,6 @@ test('rollProbabilities test setProbabilities', () => {
     roulette.rollProbabilities();
     jest.advanceTimersByTime(10000);
     expect(roulette.last_roll).toBe(3);
-});
-
-test('rollProbabilities test bad input', () => {
-    const roulette = new Roulette({roulette_id: 'roulette', rolls: [1, 2, 3]});
-    roulette.rollProbabilities([0, 0]);
-    jest.advanceTimersByTime(10000);
-    expect(roulette.last_roll).toBe(undefined);
 });
 
 test('rollRandom test', () => {
@@ -83,7 +68,7 @@ test('test full customization', () => {
     roulette.setBorder('#808C99', 15);
     roulette.setArrow('<div></div>');
     roulette.setArrow('default');
-    roulette.setProbabilities([1, 1, 2]);
+    roulette.setProbabilities([1, 1, 0, 2]);
     roulette.setRollText('before', 'after');
     roulette.setRollText('before');
     roulette.setRollText();

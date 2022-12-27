@@ -2,12 +2,33 @@ type Construct =
 {
     id: string,
     rolls: number[] | string[],
+    probabilitiess?: number[],
     colors?: string[],
     duration?: number,
-    arrow?: { element?: string | HTMLElement, width?: number, fill?: string },
+    arrow?: newArrow,
     landing?: 'precise' | 'loose',
+    audio?: {
+        play?: 'once' | 'multiple',
+        dir?: string,
+    },
+    text_font?: newFont,
+    rotate?: number,
     diameter?: number,
     shrink?: number,
+};
+
+export type newFont = {
+    size?: number,
+    weight?: number,
+    color?: string,
+    rotate?: number
+}
+
+export type newArrow = {
+    element?: string | HTMLElement,
+    width?: number,
+    fill?: string,
+    rotate?: number
 };
 
 export type Standard = Construct & {
