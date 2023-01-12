@@ -40,8 +40,9 @@ export class Roulette {
         this.#diameter = construct.diameter ?? 360;
         this.#shrink = construct.shrink ?? 60;
         this.#rotation = - (construct.rotate ?? 0);
-        construct.text_font?.rotate && this.rotateText(construct.text_font.rotate);
-        'text_font' in construct && Object.assign(this.#font, construct.text_font);
+        this.setRollText(construct.text?.before ?? '', construct.text?.after ?? '');
+        construct.text?.rotate && this.rotateText(construct.text.rotate);
+        construct.text?.font && Object.assign(this.#font, construct.text.font);
         'audio' in construct && Object.assign(this.#audio, construct.audio);
         'image' in construct && Object.assign(this.#image, construct.image);
         'doughnut' in construct && Object.assign(this.#doughnut, construct.doughnut);
