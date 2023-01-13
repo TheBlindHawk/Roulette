@@ -138,7 +138,7 @@ interface TextData = {
 | font          | object          | { ... }    | The font size/weight/color of the roulette text  |
 | before        | string          | ''         | Add some text before the rolls[] values          |
 | after         | string          | ''         | Add some text after the rolls[] values           |
-| rotate        | number | string | 0          | rotate the text to face a different direction    |
+| rotate        | number / string | 0          | rotate the text to face a different direction    |
 
 #### audio: AudioData
 
