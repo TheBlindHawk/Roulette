@@ -74,7 +74,7 @@ interface Roulette = {
     duration?: number,
     arrow?: ArrowData,
     landing?: 'precise' | 'loose',
-    text: TextData,
+    text?: TextData,
     audio?: AudioData,
     rotate?: number,
     diameter?: number,
