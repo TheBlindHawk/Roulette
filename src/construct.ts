@@ -11,17 +11,23 @@ type Construct =
         play?: 'once' | 'multiple',
         dir?: string,
     },
-    text_font?: newFont,
+    text?: TextData,
     rotate?: number,
     diameter?: number,
     shrink?: number,
 };
 
+export type TextData = {
+    font?: newFont,
+    before?: string,
+    after?: string,
+    rotate?: number
+}
+
 export type newFont = {
     size?: number,
     weight?: number,
     color?: string,
-    rotate?: number
 }
 
 export type newArrow = {

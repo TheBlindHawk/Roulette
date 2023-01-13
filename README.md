@@ -67,18 +67,19 @@ roulette.roll(8);
 ## Roulette
 
 ```typescript
-interface Roulette({
+interface Roulette = {
     id: string,
     rolls: number[] | string[],
     colors?: string[],
     duration?: number,
-    arrow?: Arrow,
+    arrow?: ArrowData,
     landing?: 'precise' | 'loose',
-    audio?: { play?: 'once' | 'multiple', dir?: string },
+    text?: TextData,
+    audio?: AudioData,
     rotate?: number,
     diameter?: number,
     shrink?: number
-});
+};
 ```
 
 | Value         | Type     | Default   | Comment        |
@@ -89,14 +90,24 @@ interface Roulette({
 | duration      | number   | 10000     | How long you want the roulette to spin in milliseconds     |
 | arrow         | Arrow    | { ... }   | The design and size of the arrow if you wish to change it  |
 | landing       | Landing  | 'loose'   | You can land at the center of the roll or randomly         |
-| audio         | object   | { ... }   | set up when the audio plays and its directory              |
+| audio         | object   | { ... }   | Set up when the audio plays and its directory              |
+| text          | object   | { ... }   | The text data, such as fonts and rotation                  |
 | rotate        | number   | 0         | Initially rotate the roulette to a different degree        |
 | diameter      | number   | 310       | the width and height of the roulette element               |
 | shrink        | number   | 20        | Shrinks the size of the board in comparison to the overall |
 
 NB: if the number of colors is less than the rolls they will repeat.
 
-### arrow: Arrow
+#### arrow: ArrowData
+
+```typescript
+interface ArrowData = {
+    element?: string / HTMLElement,
+    width?: number,
+    fill?: string,
+    rotate?: number,
+};
+```
 
 | Value         | Type                 | Default    | Comment        |
 | ------------- | -------------------- | ---------- | -------------- |
@@ -107,17 +118,53 @@ NB: if the number of colors is less than the rolls they will repeat.
 
 NB: there are currently three ready made arrow svgs: 'standard', 'thin', 'sharp'.
 
+#### text: TextData
+
+```typescript
+interface TextData = {
+    font?: {
+        size?: number,
+        weight?: number,
+        color?: string,
+    },
+    before?: string,
+    after?: string,
+    rotate?: number
+};
+```
+
+| Value         | Type            | Default    | Comment        |
+| ------------- | --------------- | ---------- | -------------- |
+| font          | object          | { ... }    | The font size/weight/color of the roulette text  |
+| before        | string          | ''         | Add some text before the rolls[] values          |
+| after         | string          | ''         | Add some text after the rolls[] values           |
+| rotate        | number / string | 0          | rotate the text to face a different direction    |
+
+#### audio: AudioData
+
+```typescript
+interface AudioData = {
+    play?: 'once' | 'multiple',
+    dir?: string
+},
+```
+
+| Value         | Type            | Default    | Comment        |
+| ------------- | --------------- | ---------- | -------------- |
+| play          | string          | 'multiple' | If the sound should play on each segment or only once  |
+| dir           | string          | 'default'  | The directory of the sound. Pass '' to mute it         |
+
 ### Doughnut Roulette
 
 ```typescript
-interface Roulette({
+interface Doughnut = {
     ...
     type: 'doughnut',
     doughnut: {
         diameter: number,
         fill: string,
     }
-});
+};
 ```
 
 | Value        | Type   | Default  | Comment        |
@@ -128,20 +175,20 @@ interface Roulette({
 ### Image Roulette
 
 ```typescript
-interface Roulette({
+interface Custom = {
     ...
     type: 'image',
     image: {
         src: string,
         angle: number
     }
-});
+};
 ```
 
 | Value        | Type   | Default  | Comment        |
 | ------------ | ------ | -------- | -------------- |
-| src          | string | required | size of the hole in the doughnut   |
-| angle        | number | 0        | fix the image rotation accordingly |
+| src          | string | required | The url of the custom roulette image                |
+| angle        | number | 0        | Rotate the image without changing the initial point |
 
 
 ## Customization
