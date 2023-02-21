@@ -140,15 +140,12 @@ export class Roulette {
             audio_counter += increase - rotation; rotation = increase;
             this.#svg?.style('transform', 'rotate('+(rotation % 360 * -1)+'deg)');
             if(audio_counter >= audio_distance && this.#audio.play == 'multiple' && this.#audio.dir != '') {
-                if(this.#audio.dir === 'default') {
-                    const audio = new Audio('data:audio/wav;base64,' + sound_click);
-                    audio.volume = this.#audio.volume;
-                    audio.play();
-                } else {
-                    const audio = new Audio(this.#audio.dir);
-                    audio.volume = this.#audio.volume;
-                    audio.play();
-                }
+                const dir = this.#audio.dir === 'default'
+                        ? 'data:audio/wav;base64,' + sound_click
+                        : this.#audio.dir;
+                const audio = new Audio(dir);
+                audio.volume = this.#audio.volume;
+                audio.play();
                 audio_counter -= audio_distance;
             }
             if(rotation >= sprint || milliseconds >= this.#duration) {
