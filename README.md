@@ -38,8 +38,8 @@ npm install @theblindhawk/roulette
   - [Doughnut Roulette](#doughnut-roulette)
   - [Image Roulette](#image-roulette)
 - [Customization](#customization)
-- [Call Actions](#actions)
-- [Public Variables](#variables)
+- [Functions](#functions)
+- [Variables](#variables)
 - [More Examples](#examples)
 
 ## Usage
@@ -192,7 +192,23 @@ interface Custom = {
 
 </br>
 
-### customize the view:
+## Functions
+
+</br>
+
+### roll options
+
+| Function                 | Comment                                                 |
+| ------------------------ | ------------------------------------------------------- |
+| roll(value)              | rolls the roulette to an index with said value          |
+| rollByIndex(index)       | rolls the roulette to said index                        |
+| rollRandom()             | rolls the roulette to a random index                    |
+| rollProbabilities(probs) | rolls the roulette using custom probabilities[]         |
+| draw()                   | redraws the roulette (probably unnecessary)             |
+
+</br>
+
+### other functions
 
 | Function            | Options                | Default             |
 | ------------------- | ---------------------- | ------------------- |
@@ -202,20 +218,8 @@ interface Custom = {
 | rotateText()        | rotation(int/string)   | 'circular-inner'    |
 | setTextFont()       | size, weight, color    | '16px', 1, '#black' |
 | setDuration()       | milliseconds           | 10000               |
-| setArrow()          | Arrow                  | { ... }             |
-| setProbabilities()  | number[]               | undefined           |
-
-</br>
-
-## Actions
-
-| Function                 | Comment                                                 |
-| ------------------------ | ------------------------------------------------------- |
-| roll(value)              | rolls the roulette to an index with said value          |
-| rollByIndex(index)       | rolls the roulette to said index                        |
-| rollRandom()             | rolls the roulette to a random index                    |
-| rollProbabilities(probs) | rolls the roulette using custom probabilities[]         |
-| draw()                   | redraws the roulette (probably unnecessary)             |
+| setArrow()          | ArrowData              | { ... }             |
+| setProbabilities()  | probabilities[]        | undefined           |
 
 </br>
 
