@@ -225,11 +225,15 @@ interface Custom = {
 
 ## Variables
 
+</br>
+
 | Variable      | Type     | Comment                            |
 | ------------- | -------- |----------------------------------- |
 | last_roll     | numeric  | the last value you rolled on       |
 | onstart       | function | runs before rolling the roulette   |
 | onstop        | function | runs after rolling the roulette    |
+
+</br>
 
 ## Examples
 
