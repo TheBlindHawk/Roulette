@@ -20,11 +20,6 @@ npm install @theblindhawk/roulette
 
 </div>
 
-## Breaking Changes
-
-**V 2.1.0** Use the contructor to change the audio directory (audio_dir has been removed)  
-**V 2.1.0** roulette functions will now thow an error when receiving unprocessable data  
-
 ## Features
 
 - **Compatible** with both Javascript and TypeScript
@@ -43,12 +38,12 @@ npm install @theblindhawk/roulette
   - [Doughnut Roulette](#doughnut-roulette)
   - [Image Roulette](#image-roulette)
 - [Customization](#customization)
-- [Call Actions](#actions)
-- [Public Variables](#variables)
+- [Functions](#functions)
+- [Variables](#variables)
 - [More Examples](#examples)
 
 ## Usage
-create an html div with ```id=roulette```
+create an html div and give it and id to pass to the Roulette().
 ```html
 <div class="my_class_name" id="roulette"></div>
 ```
@@ -145,14 +140,16 @@ interface TextData = {
 ```typescript
 interface AudioData = {
     play?: 'once' | 'multiple',
+    volume?: number,
     dir?: string
 },
 ```
 
 | Value         | Type            | Default    | Comment        |
 | ------------- | --------------- | ---------- | -------------- |
-| play          | string          | 'multiple' | If the sound should play on each segment or only once  |
-| dir           | string          | 'default'  | The directory of the sound. Pass '' to mute it         |
+| play          | string          | 'multiple' | If the sound should play on each segment or only once      |
+| volume        | number          | 1          | A number in decimals defining the sound's output strength  |
+| dir           | string          | 'default'  | The directory of the sound. Pass '' to mute it             |
 
 ### Doughnut Roulette
 
@@ -195,30 +192,11 @@ interface Custom = {
 
 </br>
 
-### customize the view:
-
-| Function      | Options                | Default             |
-| ------------- | ---------------------- | ------------------- |
-| setSize()     | width, height, shrink  | 310, 310, 20        |
-| setBorder()   | color, width           | #808C94, 10         |
-| setRollText() | before, after          | '', ''              |
-| rotateText()  | rotation(int/string)   | 'circular-inner'    |
-| setTextFont() | size, weight, color    | '16px', 1, '#black' |
-| setDuration() | milliseconds           | 10000               |
+## Functions
 
 </br>
 
-### customize the sound
-
-| Variable      | Comment                            | Default                     |
-| ------------- | ---------------------------------- | --------------------------- |
-| audio_dir     | the directory of the "click" sound | 'default'                   |
-
-NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to remove sound
-
-</br>
-
-## Actions
+### roll options
 
 | Function                 | Comment                                                 |
 | ------------------------ | ------------------------------------------------------- |
@@ -230,14 +208,32 @@ NB: '/path/soundfile.wav' for custom file, 'default' for default sound, '' to re
 
 </br>
 
+### other functions
+
+| Function            | Options                | Default             |
+| ------------------- | ---------------------- | ------------------- |
+| setSize()           | width, height, shrink  | 310, 310, 20        |
+| setBorder()         | color, width           | #808C94, 10         |
+| setRollText()       | before, after          | '', ''              |
+| rotateText()        | rotation(int/string)   | 'circular-inner'    |
+| setTextFont()       | size, weight, color    | '16px', 1, '#black' |
+| setDuration()       | milliseconds           | 10000               |
+| setArrow()          | ArrowData              | { ... }             |
+| setProbabilities()  | probabilities[]        | undefined           |
+
+</br>
+
 ## Variables
+
+</br>
 
 | Variable      | Type     | Comment                            |
 | ------------- | -------- |----------------------------------- |
 | last_roll     | numeric  | the last value you rolled on       |
-| audio_dir     | string   | the directory of the "click" sound |
 | onstart       | function | runs before rolling the roulette   |
 | onstop        | function | runs after rolling the roulette    |
+
+</br>
 
 ## Examples
 

@@ -9,6 +9,7 @@ type Construct =
     landing?: 'precise' | 'loose',
     audio?: {
         play?: 'once' | 'multiple',
+        volume?: number,
         dir?: string,
     },
     text?: TextData,
