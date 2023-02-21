@@ -43,7 +43,7 @@ npm install @theblindhawk/roulette
 - [More Examples](#examples)
 
 ## Usage
-create an html div with ```id=roulette```
+create an html div and give it and id to pass to the Roulette().
 ```html
 <div class="my_class_name" id="roulette"></div>
 ```
