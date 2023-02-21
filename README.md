@@ -194,14 +194,16 @@ interface Custom = {
 
 ### customize the view:
 
-| Function      | Options                | Default             |
-| ------------- | ---------------------- | ------------------- |
-| setSize()     | width, height, shrink  | 310, 310, 20        |
-| setBorder()   | color, width           | #808C94, 10         |
-| setRollText() | before, after          | '', ''              |
-| rotateText()  | rotation(int/string)   | 'circular-inner'    |
-| setTextFont() | size, weight, color    | '16px', 1, '#black' |
-| setDuration() | milliseconds           | 10000               |
+| Function            | Options                | Default             |
+| ------------------- | ---------------------- | ------------------- |
+| setSize()           | width, height, shrink  | 310, 310, 20        |
+| setBorder()         | color, width           | #808C94, 10         |
+| setRollText()       | before, after          | '', ''              |
+| rotateText()        | rotation(int/string)   | 'circular-inner'    |
+| setTextFont()       | size, weight, color    | '16px', 1, '#black' |
+| setDuration()       | milliseconds           | 10000               |
+| setArrow()          | Arrow                  | { ... }             |
+| setProbabilities()  | number[]               | undefined           |
 
 </br>
 
