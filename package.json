@@ -1,6 +1,6 @@
 {
   "name": "@theblindhawk/roulette",
-  "version": "2.1.2",
+  "version": "2.2.1",
   "description": "a thoroughly customizable roulette wheel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
