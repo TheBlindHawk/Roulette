@@ -5,7 +5,7 @@
 ![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
 ![](https://img.shields.io/npm/v/@theblindhawk/roulette)
 ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
-![](https://img.shields.io/librariesio/release/npm/d3)
+![](https://img.shields.io/librariesio/release/npm/@theblindhawk/roulette)
 
 </div>
 
@@ -33,14 +33,24 @@ npm install @theblindhawk/roulette
 - A casino shaped Roulette to be added as one of the defaults
 
 ## Table of Contents
+- [Features](#features)
+- [Planned Features](#planned-features)
+- [Table of Contents](#table-of-contents)
 - [Usage](#usage)
-  - [Standard Roulette](#roulette)
+- [Roulette](#roulette)
+    - [arrow: ArrowData](#arrow-arrowdata)
+    - [text: TextData](#text-textdata)
+    - [audio: AudioData](#audio-audiodata)
   - [Doughnut Roulette](#doughnut-roulette)
   - [Image Roulette](#image-roulette)
 - [Customization](#customization)
 - [Functions](#functions)
+  - [roll options](#roll-options)
+  - [other functions](#other-functions)
 - [Variables](#variables)
-- [More Examples](#examples)
+- [Examples](#examples)
+  - [Roll Probabilities](#roll-probabilities)
+  - [Edit Roll Text](#edit-roll-text)
 
 ## Usage
 create an html div and give it and id to pass to the Roulette().
