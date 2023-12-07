@@ -7,12 +7,8 @@
   "files": [
     "dist/"
   ],
-  "dependencies": {
-    "d3-selection": "^3.0.0"
-  },
   "devDependencies": {
     "@babel/preset-env": "^7.19.4",
-    "@types/d3-selection": "^3.0.3",
     "@types/jest": "^29.2.1",
     "@types/node": "^20.4.7",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
@@ -25,20 +21,19 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.1",
     "ts-jest": "^29.0.3",
-    "typescript": "^5.1.6",
-    "uglifyjs-folder": "^3.1.4"
+    "typescript": "^5.1.6"
   },
   "scripts": {
     "test": "jest",
     "test-coverage": "jest --coverage",
     "lint": "run-p lint:*",
     "lint:tsc": "tsc --noEmit",
-    "lint:prettier": "prettier -c src/sounds",
+    "lint:prettier": "prettier -c src",
     "lint:eslint": "eslint src",
     "fix": "run-s fix:*",
-    "fix:prettier": "prettier -w src/sounds",
+    "fix:prettier": "prettier -w src",
     "fix:eslint": "npm run lint:eslint --fix",
-    "build": "tsc && uglifyjs-folder ./dist -e -o=./dist -x=.js"
+    "build": "tsc && mkdir dist/react && cp src/react/* dist/react"
   },
   "repository": {
     "type": "git",
@@ -64,9 +59,6 @@
     "transform": {
       "^.+\\.(ts|tsx)?$": "ts-jest",
       "^.+\\.(js|jsx)$": "babel-jest"
-    },
-    "moduleNameMapper": {
-      "d3": "<rootDir>/node_modules/d3-selection/dist/d3-selection.min.js"
     }
   },
   "bugs": {
