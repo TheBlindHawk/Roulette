@@ -1,5 +1,5 @@
 import React from 'react'
-import JSRoulette from '../index'
+import JSRoulette from '../../index'
 import PropTypes from 'prop-types'
 
 export default class Roulette extends React.PureComponent {

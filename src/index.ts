@@ -4,7 +4,7 @@ import { toHTMLElement } from './utils/utilities'
 import { defaultSettings } from './utils/defaults'
 import errors from './utils/errors'
 
-export class Roulette {
+export default class Roulette {
   private container: HTMLElement
   private board: BoardBuilder
   private arrow: ArrowBuilder

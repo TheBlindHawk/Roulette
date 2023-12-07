@@ -33,7 +33,7 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier -w src",
     "fix:eslint": "npm run lint:eslint --fix",
-    "build": "tsc && mkdir dist/react && cp src/react/* dist/react"
+    "build": "tsc && cp src/adapters/* dist"
   },
   "repository": {
     "type": "git",
