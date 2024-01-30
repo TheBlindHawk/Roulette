@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roulette</title>
+  </head>
+  <body>
+    <div id="roulette"></div>
+    <button id="start">start</button>
+    <script type="module">
+        import Roulette from './src/index.ts';
+        const roulette = new Roulette({container: 'roulette', sections: [1, 2, 3]});
+        document.getElementById('start').addEventListener('click', () => {
+            roulette.roll();
+        });
+    </script>
+  </body>
+</html>

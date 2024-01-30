@@ -9,4 +9,7 @@
         "outDir": "dist/",
         "rootDir": "src/"
     },
+    "include": [
+        "src/**/*.ts"
+    ],
 }

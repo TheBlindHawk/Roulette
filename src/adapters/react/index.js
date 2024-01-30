@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import JSRoulette from '../../index'
-import PropTypes from 'prop-types'
 
 export default class Roulette extends React.PureComponent {
   static PropTypes = {
@@ -30,6 +30,6 @@ export default class Roulette extends React.PureComponent {
 
   render() {
     this.update()
-    return <div id="blindhawk_roulette" />
+    return <div id='blindhawk_roulette' />
   }
 }

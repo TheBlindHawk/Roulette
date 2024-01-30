@@ -8,6 +8,16 @@ export type Construct = {
   audio: AudioData
 }
 
+export type OptionalConstruct = {
+  container: string | HTMLElement
+  board?: BoardData
+  arrow?: ArrowData
+  sections: SectionData[]
+  settings?: SettingData
+  colors?: string[]
+  audio?: AudioData
+}
+
 /* Data type section start */
 
 export type BoardData = {
@@ -31,26 +41,25 @@ export type ArrowData = {
 export type SectionData =
   | (number | string)
   | {
-      background?: string
-      probability?: number
-      value?: string
-      font: string
-      font_size: number
-      font_color: string
-    }
+    background?: string
+    probability?: number
+    value?: string
+    font: string
+    font_size: number
+    font_color: string
+  }
   | {
-      background?: string
-      probability?: number
-      value?: string
-      src: string
-      radius: number
-    }
+    background?: string
+    probability?: number
+    value?: string
+    src: string
+    radius: number
+  }
 
 export type RefinedSectionData = {
   index: number
-  background?: string
-  probability: number
-  value?: string
+  background: string
+  value: string
 
   font: string
   font_size: number

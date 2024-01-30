@@ -20,12 +20,15 @@ export class ArrowBuilder {
   }
 
   private drawArrow() {
-    this.element.style.maxWidth = `${this.width}px`
-    this.element.style.maxHeight = `${this.height}px`
-    this.element.style.padding = `${this.padding}px`
+    this.element.style.width = `${this.width}px`
+    this.element.style.height = `${this.height}px`
     this.element.style.position = 'absolute'
-    this.element.style.top = '0px'
-    this.element.style.backgroundColor = this.color
+    this.element.style.margin = '0 auto auto auto'
+    this.element.style.top = `0px`
+    this.element.style.left = `0px`
+    this.element.style.right = `0px`
+    this.element.style.bottom = `0px`
+    this.element.setAttribute('fill', this.color)
     this.element.style.transform = `rotate(${this.shift}deg)`
     this.element.style.zIndex = '1'
   }

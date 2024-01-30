@@ -1,4 +1,5 @@
-import { SettingData, AudioData, BoardData, BorderData, ArrowData } from './construct'
+import { sound_click } from '../resources/sounds'
+import { ArrowData, AudioData, BoardData, BorderData, SettingData } from './construct'
 
 export const defaultFontColor = '#000'
 export const defaultFont = 'Arial'
@@ -8,8 +9,8 @@ export const defaultProbability = 1
 export const defaultFontSize = 16
 
 export const defaultBorder: BorderData = {
-  width: 0,
-  color: '#000',
+  width: 5,
+  color: '#888',
   line_width: 0,
   line_color: '#000',
 }
@@ -27,16 +28,16 @@ export const defaultBoard: BoardData = {
 }
 
 export const defaultArrow: ArrowData = {
-  element: '',
+  element: 'standard',
   width: 20,
-  height: 20,
-  padding: 0,
+  height: 40,
+  padding: 20,
   color: '#000',
   shift: 0,
 }
 
 export const defaultAudio: AudioData = {
-  src: '',
+  src: 'data:audio/wav;base64,' + sound_click,
   play: {
     mute: false,
     once: false,
@@ -50,7 +51,7 @@ export const defaultAudio: AudioData = {
 
 export const defaultSettings: SettingData = {
   roll: {
-    duration: 10,
+    duration: 5000,
     landing: 'random',
     delay: 0,
   },

@@ -1,8 +1,8 @@
-import { SectionBuilder, BoardBuilder, ArrowBuilder, AudioBuilder } from './builders'
-import { Construct, SettingData, SectionData } from './utils/construct'
-import { toHTMLElement } from './utils/utilities'
-import { defaultSettings } from './utils/defaults'
+import { ArrowBuilder, AudioBuilder, BoardBuilder, SectionBuilder } from './builders'
+import { OptionalConstruct, SectionData, SettingData } from './utils/construct'
+import { defaultArrow, defaultAudio, defaultBoard, defaultSettings } from './utils/defaults'
 import errors from './utils/errors'
+import { toHTMLElement } from './utils/utilities'
 
 export default class Roulette {
   private container: HTMLElement
@@ -16,21 +16,27 @@ export default class Roulette {
   public onstart?: (roll: SectionData) => void
   public onstop?: (roll: SectionData) => void
 
-  constructor(c: Construct) {
+  constructor(c: OptionalConstruct) {
     this.settings = { ...defaultSettings, ...c.settings }
     this.container = toHTMLElement(c.container)
-    this.board = new BoardBuilder(c.board)
-    this.arrow = new ArrowBuilder(c.arrow)
-    this.sections = new SectionBuilder(c.sections, c.colors, this.settings)
-    this.audio = new AudioBuilder(c.audio)
+    this.board = new BoardBuilder({ ...defaultBoard, ...c.board })
+    this.arrow = new ArrowBuilder({ ...defaultArrow, ...c.arrow })
+    this.sections = new SectionBuilder(c.sections, c.colors ?? [], this.settings)
+    this.audio = new AudioBuilder({ ...defaultAudio, ...c.audio })
     this.drawSVGRoulette()
     this.container.appendChild(this.board.element)
     this.container.appendChild(this.arrow.element)
+    this.container.style.width = this.board.radius * 2 + 'px'
+    this.container.style.height = this.board.radius * 2 + 'px'
     this.container.style.position = 'relative'
+    this.container.style.margin = 'auto'
   }
 
-  roll(value?: string | number) {
-    if (typeof value === 'undefined') return this.rollRandom()
+  public roll(value?: string | number) {
+    if (typeof value === 'undefined') {
+      const random = Math.floor(Math.random() * this.sections.length)
+      return this.rollByIndex(random)
+    }
 
     const indexes: number[] = []
     for (let i = 0; i < this.sections.length; i++) {
@@ -42,18 +48,14 @@ export default class Roulette {
       return console.error(errors.roulette_no_such_value)
     }
     const random = Math.floor(Math.random() * indexes.length)
-    this.rollByIndex(indexes[random])
+    return this.rollByIndex(indexes[random])
   }
 
-  rollRandom() {
-    const random = Math.floor(Math.random() * this.sections.length)
-    this.rollByIndex(random)
-  }
-
-  rollProbabilities(probabilities?: number[]) {
+  public rollProbabilities(probabilities?: number[]) {
     const probs = probabilities ?? this.sections.probabilities
-    if (probs.length <= 0 || this.sections.length != probs.length) {
-      throw errors.probability_mismatch
+    if (probs.length <= 0 || this.sections.length !== probs.length) {
+      console.error(errors.probability_mismatch)
+      return
     }
 
     let counter = 0
@@ -63,15 +65,19 @@ export default class Roulette {
     for (let i = 0; i < probs.length; i++) {
       counter += probs[i]
       if (counter > random) {
-        this.rollByIndex(i)
-        break
+        return this.rollByIndex(i)
       }
     }
   }
 
   public rollByIndex(index: number) {
     if (this.rolling) {
-      throw errors.roulette_is_rolling
+      console.error(errors.roulette_is_rolling)
+      return
+    }
+    if (index < 0 || index >= this.sections.length) {
+      console.error(errors.index_out_of_bounds(index))
+      return
     }
 
     const section = this.sections.find(index)
@@ -82,8 +88,9 @@ export default class Roulette {
     let rotation = this.rotation
     const sections = this.sections.length
     const point = (360 * index) / this.sections.length + 360 / this.sections.length / 2 - this.arrow.shift
-    const loosen =
-      this.settings.roll.landing === 'random' ? Math.round((Math.random() * 320) / sections - 320 / sections / 2) : 0
+    const loosen = this.settings.roll.landing === 'random'
+      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2)
+      : 0
     const sprint = Math.floor(this.settings.roll.duration / 360 / 3) * 360 + point + loosen
 
     const audio_distance = 360 / this.sections.length
@@ -92,8 +99,10 @@ export default class Roulette {
     this.audio.playOnce()
 
     const ival = setInterval(() => {
-      const next_rotation =
-        -sprint * (milliseconds /= this.settings.roll.duration) * (milliseconds - 2) - this.board.shift
+      const next_rotation = -sprint
+          * (milliseconds / this.settings.roll.duration)
+          * (milliseconds / this.settings.roll.duration - 2)
+        - this.board.shift
       audio_counter += next_rotation - rotation
       rotation = next_rotation
 
@@ -103,6 +112,7 @@ export default class Roulette {
         this.audio.playOnSection()
         audio_counter -= audio_distance
       }
+      console.log(milliseconds, rotation, sprint)
 
       if (rotation >= sprint || milliseconds >= this.settings.roll.duration) {
         clearInterval(ival)
@@ -112,6 +122,8 @@ export default class Roulette {
       }
       milliseconds += 20
     }, 20)
+
+    return section.value
   }
 
   private drawSVGRoulette() {
@@ -129,15 +141,13 @@ export default class Roulette {
       const ty = (radius - radius / 3) * -Math.cos(angle * (index + 0.5)) + radius + this.board.padding
       const translate = 'translate(' + tx + ',' + ty + ')'
       const rotate = 'rotate(' + degree + ')'
-      const text = section.value ?? section.index.toString()
-      const font_size = section.font_size ?? this.settings.font_size
 
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
       const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
 
       path.setAttribute('d', this.getSector(radius, this.board.padding, this.sections.length, index))
-      path.setAttribute('fill', section.background ?? '#fff')
+      path.setAttribute('fill', section.background)
       path.setAttribute('stroke', this.settings.border.color)
       path.setAttribute('stroke-width', this.settings.border.width.toString())
 
@@ -146,8 +156,8 @@ export default class Roulette {
       txt.setAttribute('dominant-baseline', 'middle')
       txt.setAttribute('fill', section.font_color)
       txt.setAttribute('font-family', section.font)
-      txt.setAttribute('font-size', font_size.toString())
-      txt.textContent = text
+      txt.setAttribute('font-size', section.font_size.toString())
+      txt.textContent = section.value
 
       g.appendChild(path)
       g.appendChild(txt)

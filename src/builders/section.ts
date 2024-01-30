@@ -8,22 +8,22 @@ export class SectionBuilder {
   public probabilities: number[]
   public length: number
 
-  constructor(section: SectionData[], colors: string[], settings: SettingData) {
+  constructor(sections: SectionData[], colors: string[], settings: SettingData) {
     this.colors = colors
-    const array = typeof section === 'number' ? Array(section).fill(0) : section
-    this.length = array.length
-    this.probabilities = array.map((section) => {
-      return section.probability ?? defaultProbability
-    })
-    this.sections = array.map((section, index) => {
+    this.length = sections.length
+    this.probabilities = []
+    this.sections = sections.map((section, index) => {
       if (typeof section === 'number') {
+        this.probabilities.push(defaultProbability)
         return {
           index,
           ...settings,
+          probability: defaultProbability,
           background: this.pluckColor(index) ?? defaultBackground,
-          value: index.toString(),
+          value: section.toString(),
         }
       } else if (typeof section === 'string') {
+        this.probabilities.push(defaultProbability)
         return {
           index,
           ...settings,
@@ -32,13 +32,18 @@ export class SectionBuilder {
           value: section,
         }
       } else if (section instanceof Object) {
+        this.probabilities.push(
+          section.probability !== undefined
+            ? section.probability
+            : defaultProbability,
+        )
         return {
           index,
           ...settings,
           ...section,
           probability: section.probability ?? defaultProbability,
-          background: section.color ?? this.pluckColor(index) ?? defaultBackground,
-          value: section.value ?? index.toString(),
+          background: section.background ?? this.pluckColor(index) ?? defaultBackground,
+          value: section.value ?? (index + 1).toString(),
         }
       } else throw new Error(errors.invalidSection(index))
     })
