@@ -31,8 +31,8 @@
     "format": "dprint fmt '**/*.{js,ts,tsx,json}'",
     "format-check": "dprint check '**/*.{js,ts,tsx,json}'",
     "build": "tsc && run-s build:*",
-    "build:react": "mkdir -p dist/adapters/react && cp src/adapters/react/* dist/react/",
-    "build:vuejs": "mkdir -p dist/adapters/vuejs && cp src/adapters/vuejs/* dist/vuejs/"
+    "build:react": "mkdir -p dist/adapters/react && cp src/adapters/react/* dist/adapters/react/",
+    "build:vuejs": "mkdir -p dist/adapters/vuejs && cp src/adapters/vuejs/* dist/adapters/vuejs/"
   },
   "repository": {
     "type": "git",
