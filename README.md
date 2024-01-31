@@ -90,7 +90,7 @@ interface Roulette = {
 
 NB: if the number of colors is less than the rolls they will repeat.
 
-#### Section
+### Section
 
 ```typescript
 type Alphanumeric = number | string
@@ -121,7 +121,7 @@ const sections = [{value: "eat", background: "green"}, {value: "drink", backgrou
 const sections = [{src: "http://", radius: 10}, {src: "http://", radius: 10}]
 ```
 
-#### Board
+### Board
 
 ```typescript
 interface BoardData = {
@@ -145,7 +145,7 @@ interface BoardData = {
 
 NB: board width & height is calculated as such: ```width = (radius - padding) * 2```
 
-#### Arrow
+### Arrow
 
 ```typescript
 interface ArrowData = {
@@ -168,7 +168,7 @@ interface ArrowData = {
 
 NB: there are currently three ready made arrow svgs: 'standard', 'thin', 'sharp'.
 
-#### Settings
+### Settings
 
 ```typescript
 interface Settings = {
@@ -195,7 +195,7 @@ NB: setting options are overridable on each SectionData
 | after         | string          | ''         | Add some text after the rolls[] values           |
 | rotate        | number / string | 0          | rotate the text to face a different direction    |
 
-#### AudioData
+### AudioData
 
 ```typescript
 interface AudioData = {
