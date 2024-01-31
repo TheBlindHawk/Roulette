@@ -10,9 +10,16 @@
     <button id="start">start</button>
     <script type="module">
         import Roulette from './src/index.ts';
-        const roulette = new Roulette({container: 'roulette', sections: [1, 2, 3]});
+        const roulette = new Roulette({
+          container: 'roulette',
+          sections: [1, 2, 3],
+          colors: ["#AAD7D9", "#FBF9F1", "#E5E1DA"],
+        });
+        roulette.onstop = (result) => {
+          console.log("you rolled on:"+result.value);
+        };
         document.getElementById('start').addEventListener('click', () => {
-            roulette.roll();
+          roulette.roll();
         });
     </script>
   </body>
