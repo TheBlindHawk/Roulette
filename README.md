@@ -2,10 +2,9 @@
 
 <div align="center">
     
-![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
 ![](https://img.shields.io/npm/v/@theblindhawk/roulette)
+![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
 ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
-![](https://img.shields.io/librariesio/release/npm/@theblindhawk/roulette)
 
 </div>
 
@@ -20,13 +19,18 @@ npm install @theblindhawk/roulette
 
 </div>
 
-## Features
+## v3.0 Features
 
-- **Compatible** with both Javascript and TypeScript
+- **Compatible** with Javascript, TypeScript, React, Vue
 - **Customize** the view of the Roulette down to the details
-- **Customize** the click sound and the spin duration
+- **Customize** the click sound, the spin duration and more
 - **Control** the value the Roulette will land at
 - **Import** any of your own roulette or arrow **images**
+- **Does not** require any external dependencies
+- **Test it** out by running "npm run dev" after cloning
+
+NB: check out the change log to see what changed from version 2!
+(change log is currently Work In Progress)
 
 ## Planned Features
 
@@ -38,165 +42,175 @@ npm install @theblindhawk/roulette
 - [Table of Contents](#table-of-contents)
 - [Usage](#usage)
 - [Roulette](#roulette)
-    - [arrow: ArrowData](#arrow-arrowdata)
-    - [text: TextData](#text-textdata)
-    - [audio: AudioData](#audio-audiodata)
-  - [Doughnut Roulette](#doughnut-roulette)
-  - [Image Roulette](#image-roulette)
-- [Customization](#customization)
-- [Functions](#functions)
-  - [roll options](#roll-options)
-  - [other functions](#other-functions)
+  - [ArrowData](#arrow-arrowdata)
+  - [TextData](#text-textdata)
+  - [AudioData](#audio-audiodata)
+- [Roll Options](#roll-options)
 - [Variables](#variables)
 - [Examples](#examples)
-  - [Roll Probabilities](#roll-probabilities)
-  - [Edit Roll Text](#edit-roll-text)
 
 ## Usage
-create an html div and give it and id to pass to the Roulette().
-```html
-<div class="my_class_name" id="roulette"></div>
-```
-
 import and set up the roulette using js
 ```javascript
 import { Roulette } from "@theblindhawk/roulette";
 
-// the array with all the roulette options
-const rolls = [0, 8, 3, 5, 50];
-let roulette = new Roulette({id: "roulette", rolls: rolls});
+const container = document.querySelector('.wheel-container')
+const sections = [0, 8, 3, 5, 50];
+let roulette = new Roulette({container, sections});
 // tell the roulette to roll on said option
-roulette.roll(8);
+const result = roulette.roll();
 ```
+the container variable can either be:
+1. the HTMLElement where the roulette will be placed
+2. the id of the Element where the roulette will e placed
 
 ## Roulette
 
 ```typescript
 interface Roulette = {
-    id: string,
-    rolls: number[] | string[],
-    colors?: string[],
-    duration?: number,
-    arrow?: ArrowData,
-    landing?: 'precise' | 'loose',
-    text?: TextData,
-    audio?: AudioData,
-    rotate?: number,
-    diameter?: number,
-    shrink?: number
+  container: string | HTMLElement
+  sections: SectionData[]
+  colors: string[]
+  board: BoardData
+  arrow: ArrowData
+  settings: SettingData
+  audio: AudioData
 };
 ```
 
-| Value         | Type     | Default   | Comment        |
-| ------------- | -------- | --------- | -------------- |
-| id            | string   | required  | The id of the div element that will contain the roulette.  |
-| rolls         | array    | required  | The values of each section of the roulette.                |
-| colors        | array    | []        | The colors of the sections of the roulette.                |
-| duration      | number   | 10000     | How long you want the roulette to spin in milliseconds     |
-| arrow         | Arrow    | { ... }   | The design and size of the arrow if you wish to change it  |
-| landing       | Landing  | 'loose'   | You can land at the center of the roll or randomly         |
-| audio         | object   | { ... }   | Set up when the audio plays and its directory              |
-| text          | object   | { ... }   | The text data, such as fonts and rotation                  |
-| rotate        | number   | 0         | Initially rotate the roulette to a different degree        |
-| diameter      | number   | 310       | the width and height of the roulette element               |
-| shrink        | number   | 20        | Shrinks the size of the board in comparison to the overall |
+| Value         | Type                 | Default   | Comment        |
+| ------------- | -------------------- | --------- | -------------- |
+| container     | string / HTMLElement | required  | The id or the element that will contain the roulette  |
+| sections      | SectionData[]        | required  | The values of each section of the roulette            |
+| colors        | string[]             | ['#fff']  | A list of (repeating) colors for the sections         |
+| board         | BoardData            | { ... }   | Customization for the roulette board                  |
+| arrow         | ArrowData            | { ... }   | Customization for the roulette arrow                  |
+| settings      | SettingData          | { ... }   | More settings such as fonts, colors, borders          |
+| audio         | AudioData            | { ... }   | Set up when the audio plays and its directory         |
 
 NB: if the number of colors is less than the rolls they will repeat.
 
-#### arrow: ArrowData
+### Section
+
+```typescript
+type Alphanumeric = number | string
+type Customized = {
+  background: string
+  probability: number
+  value: string
+  font: string
+  font_size: number
+  font_color: string
+}
+type ImageSrc ={
+  background: string
+  probability: number
+  value: string
+  src: string
+  radius: number
+}
+interface SectionData = 
+  | Alphanumeric
+  | Customized
+  | ImageSrc
+```
+examples
+```typescript
+const sections = ["eat", "sleep", "drink"];
+const sections = [{value: "eat", background: "green"}, {value: "drink", background: "blue"}]
+const sections = [{src: "http://", radius: 10}, {src: "http://", radius: 10}]
+```
+
+### Board
+
+```typescript
+interface BoardData = {
+  element: string | HTMLElement
+  doughnut: { radius: number; color: string }
+  shift: number
+  border: BorderData
+  radius: number
+  padding: number
+}
+```
+
+| Value         | Type                 | Default   | Comment        |
+| ------------- | -------------------- | --------- | -------------- |
+| element       | string / HTMLElement | undefined | the board as an html string or as an element            |
+| doughnut      | { radius, color }    | undefined | the size of the hole at the center of the roulette      |
+| shift         | number               | 0         | shift the starting point of "shift" degrees clockwise   |
+| border        | BorderData           | { ... }   | the color, width andother border related settings       |
+| radius        | number               | 120       | the radius of the roulette board                        |
+| padding       | number               | 20        | the padding from the container                          |
+
+NB: board width & height is calculated as such: ```width = (radius - padding) * 2```
+
+### Arrow
 
 ```typescript
 interface ArrowData = {
-    element?: string / HTMLElement,
-    width?: number,
-    fill?: string,
-    rotate?: number,
+  element: string | HTMLElement
+  shift: ShiftOptions
+  width: number
+  height: number
+  padding: number
+  color: string
 };
 ```
 
 | Value         | Type                 | Default    | Comment        |
 | ------------- | -------------------- | ---------- | -------------- |
 | element       | string / HTMLElement | 'standard' | the arrow as an html string or as an element  |
+| shift         | number               | 0          | rotate the arrow "shift" degrees clockwise    |
 | width         | number               | 60         | the width of the arrow element in pixels      |
-| fill          | string               | 'black'    | the color of arrow (if the element is an svg) |
-| rotate        | number               | 0          | rotate the arrow to a different position      |
+| height        | number               | 60         | the heght of the arrow element in pixels      |
+| padding       | number               | 20         | the arrow's distance from the top             |
 
 NB: there are currently three ready made arrow svgs: 'standard', 'thin', 'sharp'.
 
-#### text: TextData
+### Settings
 
 ```typescript
-interface TextData = {
-    font?: {
-        size?: number,
-        weight?: number,
-        color?: string,
-    },
-    before?: string,
-    after?: string,
-    rotate?: number
+interface Settings = {
+  roll: {
+    duration: number
+    landing: LandingTypes
+    delay: number
+  }
+  // general overridable options
+  font: string
+  font_size: number
+  font_weight: number
+  font_color: string
+  border: BorderData
 };
 ```
 
+NB: setting options are overridable on each SectionData
+
 | Value         | Type            | Default    | Comment        |
 | ------------- | --------------- | ---------- | -------------- |
-| font          | object          | { ... }    | The font size/weight/color of the roulette text  |
+| font          | string          | { ... }    | The font size/weight/color of the roulette text  |
 | before        | string          | ''         | Add some text before the rolls[] values          |
 | after         | string          | ''         | Add some text after the rolls[] values           |
 | rotate        | number / string | 0          | rotate the text to face a different direction    |
 
-#### audio: AudioData
+### AudioData
 
 ```typescript
 interface AudioData = {
-    play?: 'once' | 'multiple',
-    volume?: number,
-    dir?: string
+  src: string
+  volume: number
+  play: {
+    once: boolean
+    every: {
+        milliseconds: number
+        sections: number
+    }
+    mute: boolean
+  }
 },
 ```
-
-| Value         | Type            | Default    | Comment        |
-| ------------- | --------------- | ---------- | -------------- |
-| play          | string          | 'multiple' | If the sound should play on each segment or only once      |
-| volume        | number          | 1          | A number in decimals defining the sound's output strength  |
-| dir           | string          | 'default'  | The directory of the sound. Pass '' to mute it             |
-
-### Doughnut Roulette
-
-```typescript
-interface Doughnut = {
-    ...
-    type: 'doughnut',
-    doughnut: {
-        diameter: number,
-        fill: string,
-    }
-};
-```
-
-| Value        | Type   | Default  | Comment        |
-| ------------ | ------ | -------- | -------------- |
-| diameter     | number | required | size of the hole in the doughnut  |
-| fill         | string | 'white'  | color of the hole in the doughnut |
-
-### Image Roulette
-
-```typescript
-interface Custom = {
-    ...
-    type: 'image',
-    image: {
-        src: string,
-        angle: number
-    }
-};
-```
-
-| Value        | Type   | Default  | Comment        |
-| ------------ | ------ | -------- | -------------- |
-| src          | string | required | The url of the custom roulette image                |
-| angle        | number | 0        | Rotate the image without changing the initial point |
-
 
 ## Customization
 
@@ -212,24 +226,7 @@ interface Custom = {
 | ------------------------ | ------------------------------------------------------- |
 | roll(value)              | rolls the roulette to an index with said value          |
 | rollByIndex(index)       | rolls the roulette to said index                        |
-| rollRandom()             | rolls the roulette to a random index                    |
 | rollProbabilities(probs) | rolls the roulette using custom probabilities[]         |
-| draw()                   | redraws the roulette (probably unnecessary)             |
-
-</br>
-
-### other functions
-
-| Function            | Options                | Default             |
-| ------------------- | ---------------------- | ------------------- |
-| setSize()           | width, height, shrink  | 310, 310, 20        |
-| setBorder()         | color, width           | #808C94, 10         |
-| setRollText()       | before, after          | '', ''              |
-| rotateText()        | rotation(int/string)   | 'circular-inner'    |
-| setTextFont()       | size, weight, color    | '16px', 1, '#black' |
-| setDuration()       | milliseconds           | 10000               |
-| setArrow()          | ArrowData              | { ... }             |
-| setProbabilities()  | probabilities[]        | undefined           |
 
 </br>
 
@@ -239,92 +236,9 @@ interface Custom = {
 
 | Variable      | Type     | Comment                            |
 | ------------- | -------- |----------------------------------- |
-| last_roll     | numeric  | the last value you rolled on       |
 | onstart       | function | runs before rolling the roulette   |
-| onstop        | function | runs after rolling the roulette    |
+| onstop        | function | runs when roulette stops rolling   |
 
 </br>
 
-## Examples
-
-Here is a fully customized standard roulette example
-```javascript
-import { Roulette } from "@theblindhawk/roulette";
-
-const rolls = [0, 8, 3, 5, 50];
-const colors = ["#27296a", "#db5a52"];
-// svg element width = 500x500, wheel drawing width = 460x460
-const roulette = new Roulette({
-    id: "roulette",
-    rolls: rolls,
-    colors: colors,
-    duration: 5000,
-    arrow: {
-        width: 80,
-        fill: 'grey'
-    },
-    landing: 'precise',
-    diameter: 500,
-    shrink: 40
-});
-roulette.audio_dir = 'sounds/my_click.wav';
-
-roulette.onstop = function(last_roll) { console.log(last_roll) }
-roulette.rollRandom();
-```
-
-### Roll Probabilities
-The probabilities[] array will accept an array the same lenght of the rolls[] containing integers.  
-```javascript
-const rolls = [0, 8, 3, 5, 50];
-// 10% chance for 0/8/3 and 35% chance for 5/50
-const probabilities = [10, 10, 10, 35, 35]
-const roulette = new Roulette({id: "roulette", rolls: rolls});
-
-roulette.setProbabilities(probabilities);
-roulette.rollProbabilities();
-```
-You can also shorten the syntax by directly handing the probabilities to the roll statement  
-```javascript
-// use previously passed probabilities
-roulette.setProbabilities(probabilities);
-roulette.rollProbabilities();
-
-// directly hand probabilities when rolling
-roulette.rollProbabilities(probabilities);
-```
-Any values, so long as they are an array of integers can be passed as probabilities.  
-The following examples will all have 3 choices with 25%/25%/50% probabilities.  
-```javascript
-// these will all result in the same probabilities
-roulette.rollProbabilities([ 25, 25, 50 ]);
-roulette.rollProbabilities([ 1, 1, 2 ]);
-roulette.rollProbabilities([ 36, 36, 72 ]);
-```
-
-### Edit Roll Text
-
-For changing the font of the roulette you can either change the font of the container or rely on ```setTextFont()```.
-```html
-<div class="change_font_here" id="roulette"></div>
-```
-```javascript
-roulette.setRollText(20, 600, 'grey');
-```
-The Roulette will automatically display the values passed in the roll[].  
-But if you need to add some text before or after the rolls use the following.  
-```javascript
-const probabilities = ['first', 'second'];
-const roulette = new Roulette({id: "roulette", rolls: rolls});
-
-// roll 1: 'the first value'
-// roll 2: 'the second value'
-roulette.setRollText('the ', ' value');
-```
-If you wish to rotate the text somehow use the following.  
-```javascript
-// the text is"straight" on the right side
-roulette.rotateText('sideways-right');
-// the same but using an integer for it
-roulette.rotateText(270);
-```
+## Examples (Work In Progess...)
