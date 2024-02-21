@@ -32,10 +32,6 @@ npm install @theblindhawk/roulette
 NB: check out the change log to see what changed from version 2!
 (change log is currently Work In Progress)
 
-## Planned Features
-
-- A casino shaped Roulette to be added as one of the defaults
-
 ## Table of Contents
 - [Features](#features)
 - [Planned Features](#planned-features)
@@ -241,4 +237,19 @@ interface AudioData = {
 
 </br>
 
-## Examples (Work In Progess...)
+## Examples
+
+To try out the code clone the repository then run:
+```
+npm install
+npm run dev
+```
+Then navigate to ```http://localhost:5173/```, there will be three examples available.
+
+If you want to try your own code/settings edit the file ```index.html``` and the changes will be reflected immedeately!
+
+Here is an example of a fully set up Roulette:
+
+```
+// WIP...
+```

@@ -16,7 +16,14 @@ export class BoardBuilder {
     this.radius = board.radius
     this.padding = board.padding
     this.doughnut = board.doughnut
-    this.element = board.element ? toHTMLBoard(board.element) : this.createSVGBoard()
+    if (board.element) {
+      this.element = toHTMLBoard(board.element)
+      this.element.style.width = `${this.radius * 2 - this.padding * 2}px`
+      this.element.style.height = `${this.radius * 2 - this.padding * 2}px`
+      this.element.style.padding = `${this.padding}px`
+    } else {
+      this.element = this.createSVGBoard()
+    }
     this.custom_image = !!board.element
   }
 

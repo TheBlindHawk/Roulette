@@ -60,4 +60,31 @@ export class SectionBuilder {
   public find(index: number) {
     return this.sections[index]
   }
+
+  public getSectionElement(section: RefinedSectionData, translate: string, rotate: string) {
+    if(section.src && section.radius) {
+      const img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+      img.setAttribute('transform', translate + rotate)
+      img.setAttribute('href', section.src)
+      img.setAttribute('x', `-${section.radius}`)
+      img.setAttribute('y', `-${section.radius}`)
+      img.setAttribute('width', `${section.radius * 2}`)
+      img.setAttribute('height', `${section.radius * 2}`)
+      return img
+    }
+    return this.getSectionText(section, translate, rotate)
+  }
+
+  public getSectionText(section: RefinedSectionData, translate: string, rotate: string) {
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+    txt.setAttribute('transform', translate + rotate)
+    txt.setAttribute('text-anchor', 'middle')
+    txt.setAttribute('dominant-baseline', 'middle')
+    txt.setAttribute('fill', section.font_color)
+    txt.setAttribute('font-family', section.font)
+    txt.setAttribute('font-size', section.font_size.toString())
+    txt.textContent = section.value
+
+    return txt
+  }
 }

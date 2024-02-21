@@ -112,7 +112,6 @@ export default class Roulette {
         this.audio.playOnSection()
         audio_counter -= audio_distance
       }
-      console.log(milliseconds, rotation, sprint)
 
       if (rotation >= sprint || milliseconds >= this.settings.roll.duration) {
         clearInterval(ival)
@@ -144,23 +143,16 @@ export default class Roulette {
 
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
 
       path.setAttribute('d', this.getSector(radius, this.board.padding, this.sections.length, index))
       path.setAttribute('fill', section.background)
       path.setAttribute('stroke', this.settings.border.color)
       path.setAttribute('stroke-width', this.settings.border.width.toString())
 
-      txt.setAttribute('transform', translate + rotate)
-      txt.setAttribute('text-anchor', 'middle')
-      txt.setAttribute('dominant-baseline', 'middle')
-      txt.setAttribute('fill', section.font_color)
-      txt.setAttribute('font-family', section.font)
-      txt.setAttribute('font-size', section.font_size.toString())
-      txt.textContent = section.value
+      const section_element = this.sections.getSectionElement(section, translate, rotate)
 
       g.appendChild(path)
-      g.appendChild(txt)
+      g.appendChild(section_element)
       this.board.element.appendChild(g)
     })
 
