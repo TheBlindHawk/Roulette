@@ -11,8 +11,6 @@ export const defaultFontSize = 16
 export const defaultBorder: BorderData = {
   width: 5,
   color: '#888',
-  line_width: 0,
-  line_color: '#000',
 }
 
 export const defaultBoard: BoardData = {

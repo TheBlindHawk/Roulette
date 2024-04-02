@@ -98,8 +98,6 @@ export type AudioPlayOptions = {
 export type BorderData = {
   width: number
   color: string
-  line_width: number
-  line_color: string
 }
 
 /* Data type section end */
