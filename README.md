@@ -20,7 +20,7 @@ npm install @theblindhawk/roulette
 </div>
 
 > [!WARNING]  
-> **@theblindhawk/roulette** will soon be renamed into **roulette-spinner** therefore marked as deprecated.  
+> **@theblindhawk/roulette** will soon be renamed into **roulette-spinner** therefore marked as deprecated (the github repository will stay the same).  
 > The following changes will be applied on the new package:  
 > 1. the license will be changed from ISC to MIT for convenience
 > 2. a few keywords such as "roll" will be changing into "spin"
@@ -40,6 +40,15 @@ npm install @theblindhawk/roulette
 
 NB: check out the change log to see what changed from version 2!
 https://github.com/TheBlindHawk/Roulette/releases/tag/v%2F3.0.0
+
+## v3.1 Objectives
+
+- possibility of empty spinning a roulette while waiting for a value.
+
+## v4.0 Objectives
+
+- library name change @theblindhawk/roulette => roulette-spinner
+- separate packages for react and vue implementations
 
 ## Table of Contents
 - [Features](#features)
