@@ -19,9 +19,18 @@ npm install @theblindhawk/roulette
 
 </div>
 
+> [!WARNING]  
+> **@theblindhawk/roulette** will soon be renamed into **roulette-spinner** therefore marked as deprecated.  
+> The following changes will be applied on the new package:  
+> 1. the license will be changed from ISC to MIT for convenience
+> 2. a few keywords such as "roll" will be changing into "spin"
+> 3. Vue and React utilities will be coming in the form of new packages (roulette-spinner-react and roulette-spinner-vue)  
+>
+> Apologies for the inconvinience!
+
 ## v3.0 Features
 
-- **Compatible** with Javascript, TypeScript, React, Vue
+- **Compatible** with Javascript, TypeScript
 - **Customize** the view of the Roulette down to the details
 - **Customize** the click sound, the spin duration and more
 - **Control** the value the Roulette will land at
@@ -30,7 +39,7 @@ npm install @theblindhawk/roulette
 - **Test it** out by running "npm run dev" after cloning
 
 NB: check out the change log to see what changed from version 2!
-(change log is currently Work In Progress)
+https://github.com/TheBlindHawk/Roulette/releases/tag/v%2F3.0.0
 
 ## Table of Contents
 - [Features](#features)
@@ -250,6 +259,81 @@ If you want to try your own code/settings edit the file ```index.html``` and the
 
 Here is an example of a fully set up Roulette:
 
+```typescript
+const img = new Image()
+img.src = 'https://link_to_my_board_image.png'
+
+const roulette = new Roulette({
+  container: 'roulette',
+  board: {
+    element: img,
+    doughnut: { radius: 10, color: 'white' },
+    shift: 10, // degrees
+    border: {
+      width: 4,
+      color: 'grey',
+    },
+    radius: 120,
+    padding: 20,
+  },
+  arrow: {
+    element: 'standard',
+    width: 20,
+    height: 40,
+    padding: 20,
+    color: '#000',
+    shift: 0,
+  }
+  sections: [{
+    value: 'fail',
+    probability: 7,
+    font: 'Arial',
+    font_size: 12,
+    font_color: 'red',
+    radius: 50
+  }, {
+    value: 'grey car',
+    probability: 1,
+    src: 'https://link_to_some_image.svg',
+    radius: 50
+  }, {
+    value: 'blue car',
+    probability: 1,
+    src: 'https://link_to_some_image.svg',
+    radius: 50
+  }, {
+    value: 'red car',
+    probability: 1,
+    src: 'https://link_to_some_image.svg',
+    radius: 50
+  }],
+  settings: {
+    roll: {
+      duration: 10000, // milliseconds
+      landing: 'edge',
+      delay: 0, // WIP
+    },
+    font: 'Arial',
+    font_size: 12,
+    font_color: 'black',
+    border: {
+      width: 4,
+      color: 'grey',
+    },
+  }
+  colors: [ 'yellow', 'white', 'white', 'white' ],
+  audio: {
+    src: 'https://link_to_some_audio'
+    volume: 1,
+    play: { once: true },
+  }
+});
 ```
-// WIP...
+
+You can then roll the roulette like so.
+
+```
+roll() // to a random value given equal probabilities
+rollIndex(2) // to the grey car
+rollProbabilities() // using the probabilities given in the costructor
 ```

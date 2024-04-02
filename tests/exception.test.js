@@ -1,10 +1,11 @@
 /* @jest-environment jsdom */
 /* jslint browser: true */
-/* global document */
+/* global document window */
 import { test, vi } from 'vitest'
 import Roulette from '../src/index'
 
 vi.useFakeTimers({ shouldAdvanceTime: true })
+vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockImplementation(() => {})
 document.body.innerHTML = `<div id="roulette"></div>`
 
 test('roulette constructor id search fail', () => {

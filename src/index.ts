@@ -116,8 +116,8 @@ export default class Roulette {
       if (rotation >= sprint || milliseconds >= this.settings.roll.duration) {
         clearInterval(ival)
         this.rotation = rotation % 360
-        this.rolling = false
         this.onstop?.(section)
+        this.rolling = false
       }
       milliseconds += 20
     }, 20)

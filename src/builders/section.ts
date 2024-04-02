@@ -62,7 +62,7 @@ export class SectionBuilder {
   }
 
   public getSectionElement(section: RefinedSectionData, translate: string, rotate: string) {
-    if(section.src && section.radius) {
+    if (section.src && section.radius) {
       const img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
       img.setAttribute('transform', translate + rotate)
       img.setAttribute('href', section.src)
