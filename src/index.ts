@@ -89,8 +89,7 @@ export default class Roulette {
     const sections = this.sections.length
     const point = (360 * index) / this.sections.length + 360 / this.sections.length / 2 - this.arrow.shift
     const loosen = this.settings.roll.landing === 'random'
-      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2)
-      : 0
+      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2) : 0
     const sprint = Math.floor(this.settings.roll.duration / 360 / 3) * 360 + point + loosen
 
     const audio_distance = 360 / this.sections.length
@@ -123,6 +122,72 @@ export default class Roulette {
     }, 20)
 
     return section.value
+  }
+
+  public asyncRoll(promise: Promise<number>) {
+    if (this.rolling) {
+      console.error(errors.roulette_is_rolling)
+      return
+    }
+
+    let section: SectionData | undefined
+    this.onstart?.(undefined as unknown as number)
+    this.rolling = true
+
+    let milliseconds = 0
+    let rotation = this.rotation
+    const sections = this.sections.length
+    const loosen = this.settings.roll.landing === 'random'
+      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2) : 0
+    let sprint = Math.floor(this.settings.roll.duration / 360 / 3) * 360 + loosen
+
+    const audio_distance = 360 / this.sections.length
+    let audio_counter = (rotation + this.board.shift) % audio_distance
+
+    this.audio.playOnce()
+
+    const ival = setInterval(() => {
+      const next_rotation = -sprint
+          * (milliseconds / this.settings.roll.duration)
+          * (milliseconds / this.settings.roll.duration - 2)
+        - this.board.shift
+      audio_counter += next_rotation - rotation
+      rotation = section ? next_rotation : next_rotation % 360
+
+      this.board.rotateImage((rotation % 360) * -1)
+
+      if (audio_counter >= audio_distance) {
+        this.audio.playOnSection()
+        audio_counter -= audio_distance
+      }
+
+      if (section && (rotation >= sprint || milliseconds >= this.settings.roll.duration)) {
+        clearInterval(ival)
+        this.rotation = rotation % 360
+        this.onstop?.(section)
+        this.rolling = false
+      }
+      milliseconds += 20
+    }, 20)
+
+    promise.then((index) => {
+      section = this.sections.find(index)
+
+      if (index < 0 || index >= this.sections.length) {
+        console.error(errors.index_out_of_bounds(index))
+        clearInterval(ival)
+        this.rolling = false
+        return
+      }
+
+      sprint += (360 * index) / this.sections.length + 360 / this.sections.length / 2 - this.arrow.shift
+    })
+
+    promise.catch((error) => {
+      console.error(error)
+      clearInterval(ival)
+      this.rolling = false
+    })
   }
 
   private drawSVGRoulette() {

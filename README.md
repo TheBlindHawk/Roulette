@@ -26,7 +26,7 @@ npm install @theblindhawk/roulette
 > 2. a few keywords such as "roll" will be changing into "spin"
 > 3. Vue and React utilities will be coming in the form of new packages (roulette-spinner-react and roulette-spinner-vue)  
 >
-> Apologies for the inconvinience!
+> Apologies for the inconvenience!
 
 ## v3.0 Features
 
