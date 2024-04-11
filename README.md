@@ -5,6 +5,7 @@
 ![](https://img.shields.io/npm/v/@theblindhawk/roulette)
 ![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
 ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
+[![Node.js CI](https://github.com/TheBlindHawk/Roulette/actions/workflows/node.js.yml/badge.svg)](https://github.com/TheBlindHawk/Roulette/actions/workflows/node.js.yml)
 
 </div>
 
@@ -26,7 +27,7 @@ npm install @theblindhawk/roulette
 > 2. a few keywords such as "roll" will be changing into "spin"
 > 3. Vue and React utilities will be coming in the form of new packages (roulette-spinner-react and roulette-spinner-vue)  
 >
-> Apologies for the inconvinience!
+> Apologies for the inconvenience!
 
 ## v3.0 Features
 
@@ -38,14 +39,9 @@ npm install @theblindhawk/roulette
 - **Does not** require any external dependencies
 - **Test it** out by running "npm run dev" after cloning
 
-NB: check out the change log to see what changed from version 2!
-https://github.com/TheBlindHawk/Roulette/releases/tag/v%2F3.0.0
+NB: check out the [change log](https://github.com/TheBlindHawk/Roulette/releases/tag/v%2F3.0.0) to see what changed from version 2!
 
-## v3.1 Objectives
-
-- possibility of empty spinning a roulette while waiting for a value.
-
-## v4.0 Objectives
+## v4.0 Objectives (by June)
 
 - library name change @theblindhawk/roulette => roulette-spinner
 - separate packages for react and vue implementations
@@ -236,11 +232,27 @@ interface AudioData = {
 
 ### roll options
 
-| Function                 | Comment                                                 |
-| ------------------------ | ------------------------------------------------------- |
-| roll(value)              | rolls the roulette to an index with said value          |
-| rollByIndex(index)       | rolls the roulette to said index                        |
-| rollProbabilities(probs) | rolls the roulette using custom probabilities[]         |
+| Function                  | Comment                                                       |
+| ------------------------- | ------------------------------------------------------------- |
+| roll(value)               | rolls the roulette to an index with said value                |
+| rollByIndex(index)        | rolls the roulette to said index                              |
+| rollProbabilities(probs)  | rolls the roulette using custom probabilities[]               |
+| asyncRollByIndex(promise) | rolls the roulette while waiting for the value in the promise |
+
+**asyncRoll example**
+
+```typescript
+const { promise, resolve, reject } = Promise.withResolvers()
+
+roulette.asyncRollByIndex(promise)
+
+// keeps rolling while waiting for the value
+axios.get('your_path').then((res) => {
+  resolve(res.data.rollIndex)
+}).catch((error) => {
+  reject(error)
+})
+```
 
 </br>
 
@@ -292,7 +304,7 @@ const roulette = new Roulette({
     padding: 20,
     color: '#000',
     shift: 0,
-  }
+  },
   sections: [{
     value: 'fail',
     probability: 7,
@@ -329,20 +341,20 @@ const roulette = new Roulette({
       width: 4,
       color: 'grey',
     },
-  }
+  },
   colors: [ 'yellow', 'white', 'white', 'white' ],
   audio: {
     src: 'https://link_to_some_audio'
     volume: 1,
     play: { once: true },
-  }
+  },
 });
 ```
 
 You can then roll the roulette like so.
 
-```
-roll() // to a random value given equal probabilities
-rollIndex(2) // to the grey car
-rollProbabilities() // using the probabilities given in the costructor
+```typescript
+roulette.roll() // to a random value given equal probabilities
+roulette.rollIndex(2) // to the grey car
+roulette.rollProbabilities() // using the probabilities given in the costructor
 ```

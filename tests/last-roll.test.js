@@ -12,21 +12,21 @@ test('roulette rollByIndex', () => {
   const roulette = new Roulette({ container: 'roulette', sections: ['a', 'b', 'c'] })
   const last_roll = roulette.rollByIndex(0)
   vi.advanceTimersByTime(10000)
-  expect(last_roll).toBe('a')
+  expect(last_roll).toStrictEqual(roulette.sections[0])
 })
 
 test('roulette roll value index', () => {
   const roulette = new Roulette({ container: 'roulette', sections: [1, 2, 3] })
   const last_roll = roulette.roll('3')
   vi.advanceTimersByTime(10000)
-  expect(last_roll).toBe('3')
+  expect(last_roll).toStrictEqual(roulette.sections[2])
 })
 
 test('roulette roll value string', () => {
   const roulette = new Roulette({ container: 'roulette', sections: ['a', 'b', 'c'] })
   const last_roll = roulette.roll('a')
   vi.advanceTimersByTime(10000)
-  expect(last_roll).toBe('a')
+  expect(last_roll).toStrictEqual(roulette.sections[0])
 })
 
 test('roulette roll probabilities', () => {
@@ -54,7 +54,7 @@ test('roulette roll definite probabilities', () => {
   })
   const last_roll = roulette.rollProbabilities()
   vi.advanceTimersByTime(10000)
-  expect(last_roll).toBe('a')
+  expect(last_roll).toStrictEqual(roulette.sections[0])
 })
 
 test('roulette roll undefined', () => {

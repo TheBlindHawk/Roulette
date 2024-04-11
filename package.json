@@ -1,6 +1,6 @@
 {
   "name": "@theblindhawk/roulette",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "a thoroughly customizable roulette wheel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,9 +17,9 @@
     "eslint": "^8.56.0",
     "jsdom": "^24.0.0",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.12",
-    "vitest": "^1.2.2"
+    "typescript": "^5.4.4",
+    "vite": "^5.2.8",
+    "vitest": "^1.4.0"
   },
   "scripts": {
     "dev": "vite",

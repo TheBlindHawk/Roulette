@@ -1,0 +1,9 @@
+test:
+  script:
+    - npm install
+    - npx vitest --reporter=verbose
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: clover
+        path: coverage/clover.xml

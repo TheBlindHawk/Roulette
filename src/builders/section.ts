@@ -53,6 +53,10 @@ export class SectionBuilder {
     return this.colors[index % this.colors.length]
   }
 
+  public get() {
+    return structuredClone(this.sections)
+  }
+
   public map<T>(callback: (section: RefinedSectionData, index: number) => T) {
     return this.sections.map(callback)
   }
