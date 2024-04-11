@@ -38,6 +38,6 @@ test('roulette double roll canceling', () => {
   const roulette = new Roulette({ container: 'roulette', sections: ['a', 'b', 'c'] })
   const first_roll = roulette.rollByIndex(2)
   const second_roll = roulette.rollByIndex(2)
-  expect(first_roll).toBe('c')
+  expect(first_roll).toStrictEqual(roulette.sections[2])
   expect(second_roll).toBe(undefined)
 })

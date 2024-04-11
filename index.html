@@ -88,6 +88,11 @@
         document.getElementById('start-doughnut').addEventListener('click', () => {
           rouletteDoughnut.roll();
         });
+        const { promise, resolve, reject } = Promise.withResolvers()
+        rouletteImage.asyncRollByIndex(promise)
+        await new Promise(r => setTimeout(r, 10000));
+        console.log(rouletteImage.sections[3].value)
+        resolve(rouletteImage.sections[3].value)
     </script>
   </body>
 </html>

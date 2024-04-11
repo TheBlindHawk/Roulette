@@ -8,5 +8,6 @@ export default defineConfig({
     coverage: {
       include: ['src/index.ts', 'src/builders'],
     },
+    reporters: ['verbose']
   },
 })

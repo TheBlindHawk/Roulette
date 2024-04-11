@@ -236,11 +236,12 @@ interface AudioData = {
 
 ### roll options
 
-| Function                 | Comment                                                 |
-| ------------------------ | ------------------------------------------------------- |
-| roll(value)              | rolls the roulette to an index with said value          |
-| rollByIndex(index)       | rolls the roulette to said index                        |
-| rollProbabilities(probs) | rolls the roulette using custom probabilities[]         |
+| Function                  | Comment                                                       |
+| ------------------------- | ------------------------------------------------------------- |
+| roll(value)               | rolls the roulette to an index with said value                |
+| rollByIndex(index)        | rolls the roulette to said index                              |
+| rollProbabilities(probs)  | rolls the roulette using custom probabilities[]               |
+| asyncRollByIndex(promise) | rolls the roulette while waiting for the value in the promise |
 
 </br>
 
@@ -292,7 +293,7 @@ const roulette = new Roulette({
     padding: 20,
     color: '#000',
     shift: 0,
-  }
+  },
   sections: [{
     value: 'fail',
     probability: 7,
@@ -329,20 +330,20 @@ const roulette = new Roulette({
       width: 4,
       color: 'grey',
     },
-  }
+  },
   colors: [ 'yellow', 'white', 'white', 'white' ],
   audio: {
     src: 'https://link_to_some_audio'
     volume: 1,
     play: { once: true },
-  }
+  },
 });
 ```
 
 You can then roll the roulette like so.
 
-```
-roll() // to a random value given equal probabilities
-rollIndex(2) // to the grey car
-rollProbabilities() // using the probabilities given in the costructor
+```typescript
+roulette.roll() // to a random value given equal probabilities
+roulette.rollIndex(2) // to the grey car
+roulette.rollProbabilities() // using the probabilities given in the costructor
 ```
