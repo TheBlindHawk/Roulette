@@ -5,6 +5,7 @@
 ![](https://img.shields.io/npm/v/@theblindhawk/roulette)
 ![](https://img.shields.io/npm/dm/@theblindhawk/roulette)
 ![](https://img.shields.io/github/languages/code-size/TheBlindHawk/Roulette)
+[![Node.js CI](https://github.com/TheBlindHawk/Roulette/actions/workflows/node.js.yml/badge.svg)](https://github.com/TheBlindHawk/Roulette/actions/workflows/node.js.yml)
 
 </div>
 
