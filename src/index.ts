@@ -35,13 +35,21 @@ export default class Roulette {
 
   // getters
 
-  get isRolling() { return this._isRolling }
+  get isRolling() {
+    return this._isRolling
+  }
 
-  get degrees() { return this._degrees }
+  get degrees() {
+    return this._degrees
+  }
 
-  get history() { return this._history }
+  get history() {
+    return this._history
+  }
 
-  get sections() { return this._sections.get() }
+  get sections() {
+    return this._sections.get()
+  }
 
   // setters
 
@@ -108,7 +116,8 @@ export default class Roulette {
     const sections = this._sections.length
     const point = (360 * index) / this._sections.length + 360 / this._sections.length / 2 - this.arrow.shift
     const loosen = this.settings.roll.landing === 'random'
-      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2) : 0
+      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2)
+      : 0
     const sprint = Math.floor(this.settings.roll.duration / 360 / 3) * 360 + point + loosen
 
     const audio_distance = 360 / this._sections.length
@@ -161,7 +170,8 @@ export default class Roulette {
     const defaultIncrease = 12
     const sections = this._sections.length
     const loosen = this.settings.roll.landing === 'random'
-      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2) : 0
+      ? Math.round((Math.random() * 320) / sections - 320 / sections / 2)
+      : 0
     let sprint = Math.floor(this.settings.roll.duration / 360 / 3) * 360 + loosen
 
     const audio_distance = 360 / this._sections.length

@@ -9,7 +9,9 @@ vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockImplementation(() => {})
 document.body.innerHTML = `<div id="roulette"></div>`
 Promise.withResolvers = () => {
   let resolve, reject
-  const promise = new Promise((res, rej) => { resolve = res, reject = rej })
+  const promise = new Promise((res, rej) => {
+    resolve = res, reject = rej
+  })
   return { promise, resolve, reject }
 }
 
