@@ -244,6 +244,21 @@ interface AudioData = {
 | rollProbabilities(probs)  | rolls the roulette using custom probabilities[]               |
 | asyncRollByIndex(promise) | rolls the roulette while waiting for the value in the promise |
 
+**asyncRoll example**
+
+```typescript
+const { promise, resolve, reject } = Promise.withResolvers()
+
+roulette.asyncRollByIndex(promise)
+
+// keeps rolling while waiting for the value
+axios.get('your_path').then((res) => {
+  resolve(res.data.rollIndex)
+}).catch((error)=>{
+  reject(error)
+})
+```
+
 </br>
 
 ## Variables
