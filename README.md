@@ -39,14 +39,9 @@ npm install @theblindhawk/roulette
 - **Does not** require any external dependencies
 - **Test it** out by running "npm run dev" after cloning
 
-NB: check out the change log to see what changed from version 2!
-https://github.com/TheBlindHawk/Roulette/releases/tag/v%2F3.0.0
+NB: check out the [change log](https://github.com/TheBlindHawk/Roulette/releases/tag/v%2F3.0.0) to see what changed from version 2!
 
-## v3.1 Objectives
-
-- possibility of empty spinning a roulette while waiting for a value.
-
-## v4.0 Objectives
+## v4.0 Objectives (by June)
 
 - library name change @theblindhawk/roulette => roulette-spinner
 - separate packages for react and vue implementations
@@ -254,7 +249,7 @@ roulette.asyncRollByIndex(promise)
 // keeps rolling while waiting for the value
 axios.get('your_path').then((res) => {
   resolve(res.data.rollIndex)
-}).catch((error)=>{
+}).catch((error) => {
   reject(error)
 })
 ```
