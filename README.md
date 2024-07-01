@@ -1,3 +1,12 @@
+> [!IMPORTANT]  
+> As of July 1st **@theblindhawk/roulette** has been renamed into **roulette-spinner** therefore marked as deprecated (the github repository will stay the same).  
+> The following changes will be applied on the new package:  
+> 1. the license will be changed from ISC to MIT for convenience
+> 2. a few keywords such as "roll" will be changing into "spin"
+> 3. Vue and React utilities will be coming in the form of new packages (roulette-spinner-react and roulette-spinner-vue)  
+>
+> Apologies for the inconvenience!
+
 <h1 align="center">Customizable Roulette Library</h1>
 
 <div align="center">
@@ -8,6 +17,8 @@
 [![Node.js CI](https://github.com/TheBlindHawk/Roulette/actions/workflows/node.js.yml/badge.svg)](https://github.com/TheBlindHawk/Roulette/actions/workflows/node.js.yml)
 
 </div>
+
+for the updated version check out the [roulette-spinner](https://www.npmjs.com/package/roulette-spinner) library.
 
 ```
 npm install @theblindhawk/roulette
@@ -20,15 +31,6 @@ npm install @theblindhawk/roulette
 
 </div>
 
-> [!WARNING]  
-> **@theblindhawk/roulette** will soon be renamed into **roulette-spinner** therefore marked as deprecated (the github repository will stay the same).  
-> The following changes will be applied on the new package:  
-> 1. the license will be changed from ISC to MIT for convenience
-> 2. a few keywords such as "roll" will be changing into "spin"
-> 3. Vue and React utilities will be coming in the form of new packages (roulette-spinner-react and roulette-spinner-vue)  
->
-> Apologies for the inconvenience!
-
 ## v3.0 Features
 
 - **Compatible** with Javascript, TypeScript
@@ -40,11 +42,6 @@ npm install @theblindhawk/roulette
 - **Test it** out by running "npm run dev" after cloning
 
 NB: check out the [change log](https://github.com/TheBlindHawk/Roulette/releases/tag/v%2F3.0.0) to see what changed from version 2!
-
-## v4.0 Objectives (by June)
-
-- library name change @theblindhawk/roulette => roulette-spinner
-- separate packages for react and vue implementations
 
 ## Table of Contents
 - [Features](#features)
